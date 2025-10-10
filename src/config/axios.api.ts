@@ -1,6 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig, type AxiosInstance, type AxiosResponse } from "axios";
 import dotenv from "dotenv";
-import { refreshToken } from "../services";
+import { logoutUser, refreshToken } from "../services";
 
 dotenv.config();
 const API_BASE_URL = process.env.API_BASE_URL;
@@ -12,6 +12,16 @@ if (!API_BASE_URL) throw new Error("API_BASE_URL isn't defined in .env");
 interface AxiosRequestConfigWithRetry extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
+
+const handleLogout = async () => {
+  try {
+    await logoutUser();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    window.location.href = "/login";
+  }
+};
 
 // AXIOS API
 export const API: AxiosInstance = axios.create({
@@ -36,6 +46,7 @@ API.interceptors.response.use(
         return API(originalRequest);
       } catch (refreshError) {
         console.error("Refresh token expired or invalid");
+        await handleLogout();
         return Promise.reject(refreshError);
       }
     }

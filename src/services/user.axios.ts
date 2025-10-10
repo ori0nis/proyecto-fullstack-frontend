@@ -1,7 +1,7 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import { API } from "../config";
-import type { LoginUser, NewUser, PublicUser, User } from "../models/user";
+import type { LoginUser, NewUser, PublicUser, UserProfile } from "../models/user";
 
 dotenv.config();
 const API_AUTH_ENDPOINT = process.env.API_AUTH_ENDPOINT;
@@ -20,9 +20,7 @@ export const registerUser = async (user: NewUser): Promise<PublicUser> => {
       plant_care_skill_level: user.plant_care_skill_level.trim(),
     });
 
-    const data = response.data.data;
-
-    return data;
+    return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const backendError = error.response.data;
@@ -34,12 +32,11 @@ export const registerUser = async (user: NewUser): Promise<PublicUser> => {
 };
 
 // GET CURRENT USER (FOR AUTH REASONS)
-export const getCurrentUser = async (): Promise<User> => {
+export const getCurrentUser = async (): Promise<PublicUser> => {
   try {
     const response = await API.get(API_AUTH_ENDPOINT);
-    const user = response.data.data;
 
-    return user;
+    return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const backendError = error.response.data;
@@ -72,9 +69,7 @@ export const loginUser = async (user: LoginUser): Promise<PublicUser> => {
       password: user.password,
     });
 
-    const data = response.data.data;
-
-    return data;
+    return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const backendError = error.response.data;
@@ -89,6 +84,70 @@ export const loginUser = async (user: LoginUser): Promise<PublicUser> => {
 export const logoutUser = async (): Promise<void> => {
   try {
     await API.post("/users/logout");
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendError = error.response.data;
+      throw new Error(backendError.message || "Unexpected error");
+    } else {
+      throw new Error("Network error or unexpected issue");
+    }
+  }
+};
+
+// GET ALL USERS (ADMIN ONLY)
+export const getAllUsers = async (): Promise<PublicUser[]> => {
+  try {
+    const response = await API.get("/users/search/all-users");
+
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendError = error.response.data;
+      throw new Error(backendError.message || "Unexpected error");
+    } else {
+      throw new Error("Network error or unexpected issue");
+    }
+  }
+};
+
+// GET USER BY ID (ADMIN ONLY)
+export const getUserById = async (id: string): Promise<PublicUser> => {
+  try {
+    const response = await API.get("/users/search/user/id", { params: { id } });
+
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendError = error.response.data;
+      throw new Error(backendError.message || "Unexpected error");
+    } else {
+      throw new Error("Network error or unexpected issue");
+    }
+  }
+};
+
+// GET USER BY EMAIL (ADMIN ONLY)
+export const getUserByEmail = async (email: string): Promise<PublicUser> => {
+  try {
+    const response = API.get("/users/search/user/email", { params: { email } });
+
+    return (await response).data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendError = error.response.data;
+      throw new Error(backendError.message || "Unexpected error");
+    } else {
+      throw new Error("Network error or unexpected issue");
+    }
+  }
+};
+
+// GET USER BY USERNAME (PUBLIC)
+export const getUserByUsername = async (username: string): Promise<UserProfile> => {
+  try {
+    const response = await API.get("/users/search/user/username", { params: { username } });
+
+    return response.data.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       const backendError = error.response.data;

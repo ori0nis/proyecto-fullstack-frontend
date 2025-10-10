@@ -8,7 +8,7 @@ interface AuthContextProps {
   logout: () => Promise<void>;
   loading: boolean;
   isAuth: boolean;
-  //hasRole: (role: string) => boolean;
+  hasRole: (role: string) => boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);

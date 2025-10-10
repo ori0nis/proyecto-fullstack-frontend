@@ -1,10 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../../hooks";
+import { useAuth } from "../../context";
+import { Unauthorized } from "./Unauthorized";
 
-export const PrivateGuard = () => {
-  const { isAuth, loading } = useAuth();
+interface Props {
+  requiredRole?: string;
+}
 
-  if (loading) return <p>Authenticating user...</p>
-  
+export const PrivateGuard = ({ requiredRole }: Props) => {
+  const { isAuth, hasRole, loading } = useAuth();
+
+  if (loading) return <p>Authenticating user...</p>;
+  if (requiredRole && !hasRole("admin")) return <Unauthorized />;
+
   return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };

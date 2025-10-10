@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import type { NewUser, PublicUser } from "../models/user";
 import { getCurrentUser, loginUser, logoutUser, registerUser } from "../services";
 import type { LoginUser } from "../models/user";
@@ -11,6 +12,7 @@ interface Props {
 export const AuthContextProvider = ({ children }: Props) => {
   const [user, setUser] = useState<PublicUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkSession = async () => {
@@ -43,14 +45,23 @@ export const AuthContextProvider = ({ children }: Props) => {
   };
 
   const logout = async () => {
-    await logoutUser();
-    setUser(null);
+    try {
+      await logoutUser();
+      setUser(null);
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      navigate("/login", { replace: true });
+    }
   };
 
-  // TODO: Role logic
+  const hasRole = (role: string) => {
+    return user?.role === role;
+  };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout, loading, isAuth: !!user }}>
+    <AuthContext.Provider value={{ user, register, login, logout, loading, isAuth: !!user, hasRole }}>
       {children}
     </AuthContext.Provider>
   );
