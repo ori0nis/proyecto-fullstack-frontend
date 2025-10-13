@@ -3,7 +3,6 @@
 export interface NewPlant {
   scientific_name: string;
   common_name: string;
-  imgPath: string;
-  imgPublicUrl: string;
-  types: "desert" | "tropical" | "temperate" | "alpine" | "aquatic";
+  type: "desert" | "tropical" | "temperate" | "alpine" | "aquatic";
+  plantImg: File;
 }
