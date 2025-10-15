@@ -5,3 +5,4 @@ export * from "./request/LoginUser.model";
 export * from "./request/UserProfile.model";
 export * from "./request/UpdatedUser.model";
 export * from "./response/UserResponse.model";
+export * from "./response/UserData.model";
