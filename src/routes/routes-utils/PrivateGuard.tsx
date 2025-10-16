@@ -7,10 +7,13 @@ interface Props {
 }
 
 export const PrivateGuard = ({ requiredRole }: Props) => {
-  const { isAuth, hasRole, loading } = useAuth();
+  const { isAuth, hasRole, loadingAuth } = useAuth();
 
-  if (loading) return <p>Authenticating user...</p>;
+  if (loadingAuth) return <p>Authenticating user...</p>; // TODO: Replace for spinner
+
+  if (!isAuth) return <Navigate to="/login" replace />;
+
   if (requiredRole && !hasRole("admin")) return <Unauthorized />;
 
-  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+  return <Outlet />;
 };

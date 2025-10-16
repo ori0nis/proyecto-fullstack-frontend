@@ -6,7 +6,7 @@ interface Props {
   children: ReactNode;
 }
 
-export const BrokenRouteAvoider = async ({ children }: Props) => {
+export const BrokenRouteAvoider = ({ children }: Props) => {
   return (
     <Routes>
       {children}

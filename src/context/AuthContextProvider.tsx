@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { NewUser, PublicUser } from "../models/user";
 import { getCurrentUser, loginUser, logoutUser, registerUser } from "../services";
 import type { LoginUser } from "../models/user";
@@ -11,48 +11,82 @@ interface Props {
 
 export const AuthContextProvider = ({ children }: Props) => {
   const [user, setUser] = useState<PublicUser | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkSession = async () => {
+
+      if (["/login", "/register"].includes(location.pathname)) {
+        setLoadingAuth(false);
+        return;
+      }
+
+      setLoadingAuth(true);
       try {
-        setLoading(true);
-        const currentUser = await getCurrentUser();
-        setUser(currentUser);
+        const response = await getCurrentUser();
+        setUser(response.data.users);
       } catch {
         setUser(null);
       } finally {
-        setLoading(false);
+        setLoadingAuth(false);
       }
     };
 
     checkSession();
-  }, []);
+  }, [location.pathname]);
 
   const register = async (user: NewUser): Promise<boolean> => {
     try {
       await registerUser(user);
+      navigate("/login", { replace: true });
       return true;
-    } catch {
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("There was an error completing the register");
+      }
       return false;
     }
   };
 
-  const login = async (user: LoginUser) => {
-    const loggedUser = await loginUser(user);
-    setUser(loggedUser);
+  const login = async (loginData: LoginUser): Promise<boolean> => {
+    setError(null);
+    try {
+      const response = await loginUser(loginData);
+      setUser(response.data.users);
+
+      return true;
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unexpected login error";
+      setError(message);
+      setUser(null);
+      return false;
+    }
   };
 
   const logout = async () => {
     try {
       await logoutUser();
       setUser(null);
-      navigate("/login", { replace: true });
+      if (location.pathname !== "/login") {
+        navigate("/login", { replace: true });
+      }
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("There was an error completing the logout");
+      }
     } finally {
-      navigate("/login", { replace: true });
+      if (location.pathname !== "/login") {
+        navigate("/login", { replace: true });
+      }
     }
   };
 
@@ -61,7 +95,9 @@ export const AuthContextProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, register, login, logout, loading, isAuth: !!user, hasRole }}>
+    <AuthContext.Provider
+      value={{ user, register, login, logout, loadingAuth, error, setError, isAuth: !!user, hasRole }}
+    >
       {children}
     </AuthContext.Provider>
   );

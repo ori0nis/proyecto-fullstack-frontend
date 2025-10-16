@@ -7,16 +7,20 @@ const lowSecurityPassword: string[] = ["123", "abc", "qwerty", "password", "admi
 export const PasswordChecklist = ({ password }: Props) => {
   const rules = [
     {
+      constraint: password.length > 8,
+      message: "Password must be at least 8 characters long"
+    },
+    {
       constraint: /^(?!\s)(?!.*\s$).*$/.test(password),
       message: "Password can't contain spaces at the start or end",
     },
     {
       constraint: /[a-z]/.test(password),
-      message: "Password must contain at least one lowercase character",
+      message: "Password must contain at least one lowercase letter",
     },
     {
       constraint: /[A-Z]/.test(password),
-      message: "Password must contain at least one uppercase character",
+      message: "Password must contain at least one uppercase letter",
     },
     {
       constraint: /\d/.test(password),

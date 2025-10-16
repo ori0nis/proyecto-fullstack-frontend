@@ -1,18 +1,16 @@
-import dotenv from "dotenv";
 import { API } from "../config";
 import type { LoginUser, NewUser, PublicUser, UpdatedUser, UserProfile, UserResponse } from "../models/user";
 import { axiosErrorHandler } from "../utils";
 import type { NewUserPlant } from "../models/plant";
 
-dotenv.config();
-const API_AUTH_ENDPOINT = process.env.API_AUTH_ENDPOINT;
-const API_REFRESH_TOKEN_ENDPOINT = process.env.API_REFRESH_TOKEN_ENDPOINT;
+const VITE_API_AUTH_ENDPOINT = import.meta.env.VITE_API_AUTH_ENDPOINT;
+const VITE_API_REFRESH_TOKEN_ENDPOINT = import.meta.env.VITE_API_REFRESH_TOKEN_ENDPOINT;
 
-if (!API_AUTH_ENDPOINT) throw new Error("API_AUTH_ENDPOINT isn't defined in .env");
-if (!API_REFRESH_TOKEN_ENDPOINT) throw new Error("API_REFRESH_TOKEN_ENDPOINT isn't defined in .env");
+if (!VITE_API_AUTH_ENDPOINT) throw new Error("VITE_API_AUTH_ENDPOINT isn't defined in .env");
+if (!VITE_API_REFRESH_TOKEN_ENDPOINT) throw new Error("VITE_API_REFRESH_TOKEN_ENDPOINT isn't defined in .env");
 
 // REGISTER
-export const registerUser = async (user: NewUser): Promise<PublicUser> => {
+export const registerUser = async (user: NewUser): Promise<UserResponse<PublicUser>> => {
   try {
     const response = await API.post("/users/register", {
       username: user.username.trim(),
@@ -30,7 +28,7 @@ export const registerUser = async (user: NewUser): Promise<PublicUser> => {
 // GET CURRENT USER (FOR AUTH REASONS)
 export const getCurrentUser = async (): Promise<UserResponse<PublicUser>> => {
   try {
-    const response = await API.get(API_AUTH_ENDPOINT);
+    const response = await API.get(VITE_API_AUTH_ENDPOINT);
 
     return response.data;
   } catch (error) {
@@ -41,7 +39,7 @@ export const getCurrentUser = async (): Promise<UserResponse<PublicUser>> => {
 // REFRESH TOKEN
 export const refreshToken = async (): Promise<void> => {
   try {
-    await API.post(API_REFRESH_TOKEN_ENDPOINT);
+    await API.post(VITE_API_REFRESH_TOKEN_ENDPOINT);
   } catch (error) {
     throw axiosErrorHandler(error);
   }

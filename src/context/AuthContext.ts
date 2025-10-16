@@ -4,9 +4,11 @@ import type { LoginUser, NewUser, PublicUser } from "../models/user";
 interface AuthContextProps {
   user: PublicUser | null;
   register: (user: NewUser) => Promise<boolean>;
-  login: (user: LoginUser) => Promise<void>;
+  login: (user: LoginUser) => Promise<boolean>;
   logout: () => Promise<void>;
-  loading: boolean;
+  loadingAuth: boolean;
+  error: string | null;
+  setError: (value: string | null) => void;
   isAuth: boolean;
   hasRole: (role: string) => boolean;
 }

@@ -1,26 +1,26 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { RegisterFormValues } from "../../zod";
+import type { LoginFormValues } from "../../zod";
 
 interface Props {
   label: string;
-  name: keyof RegisterFormValues;
-  control: Control<RegisterFormValues>;
+  name: keyof LoginFormValues;
+  control: Control<LoginFormValues>;
   type?: string;
-  error?: FieldError;
   placeholder?: string;
-  onFocus?: () => void;
+  error?: FieldError;
   onBlur?: () => void;
+  onFocus?: () => void;
 }
 
-export const Input = ({
+export const InputLogin = ({
   label,
   name,
   control,
-  type,
-  error,
+  type = "text",
   placeholder,
-  onFocus = () => {},
+  error,
   onBlur = () => {},
+  onFocus = () => {},
 }: Props) => {
   return (
     <div className="">
@@ -42,7 +42,7 @@ export const Input = ({
                 field.onBlur();
                 onBlur();
               }}
-              className={`    ${error ? "" : ""}`}
+              className={`     ${error ? "" : ""}`}
             />
             {error && <p className="">{error.message}</p>}
           </>
