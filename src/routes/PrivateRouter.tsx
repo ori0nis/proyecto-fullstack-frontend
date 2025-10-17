@@ -1,13 +1,12 @@
-import { Navigate, Route } from "react-router-dom";
-import { BrokenRouteAvoider } from "./routes-utils/BrokenRouteAvoider";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Profile } from "../pages/Profile";
 
 export const PrivateRouter = () => {
   return (
-    <BrokenRouteAvoider>
+    <Routes>
       <Route path="" element={<Navigate to="profile" />} />
       <Route path="profile" element={<Profile />} /* TODO: add element (layout) */ />
       <Route path="users/search/username" /* TODO: add element */ />
-    </BrokenRouteAvoider>
+    </Routes>
   );
 };

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
-import { AdminRouter, BrokenRouteAvoider, PrivateGuard, PrivateRouter } from ".";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AdminRouter, NotFound, PrivateGuard, PrivateRouter } from ".";
 import { AuthContextProvider } from "../context";
 import { LoginLayout, RegisterLayout } from "../pages";
 
@@ -19,17 +19,25 @@ export const Router = ({ children }: Props) => {
     <>
       <BrowserRouter>
         <AuthContextProvider>
-          <BrokenRouteAvoider>
+          <Routes>
             <Route path="/register" element={<RegisterLayout />} /* TODO: add element */ />
             <Route path="/login" element={<LoginLayout />} /* TODO: add element */ />
             <Route path="/logout" /* TODO: add element */ />
+
+            {/* Private router */}
             <Route element={<PrivateGuard />}>
-              <Route path={VITE_API_PRIVATE_ENDPOINT} element={<PrivateRouter />} />
+              <Route path={`${VITE_API_PRIVATE_ENDPOINT}/*`} element={<PrivateRouter />} />
             </Route>
+
+            {/* Admin router */}
             <Route element={<PrivateGuard requiredRole="admin" />}>
               <Route path={VITE_API_ADMIN_ENDPOINT} element={<AdminRouter />} />
             </Route>
-          </BrokenRouteAvoider>
+
+            {/* Any other wrong routes */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="/404" element={<NotFound />} />
+          </Routes>
           {children}
         </AuthContextProvider>
       </BrowserRouter>

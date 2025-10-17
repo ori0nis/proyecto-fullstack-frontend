@@ -1,12 +1,17 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig, type AxiosInstance, type AxiosResponse } from "axios";
 import { logoutUser, refreshToken } from "../services";
 
-const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-if (!VITE_API_BASE_URL) throw new Error("VITE_API_BASE_URL isn't defined in .env");
-
 interface AxiosRequestConfigWithRetry extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
+
+const isProduction = import.meta.env.MODE === "production";
+
+const VITE_API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (isProduction ? "https://myplants-backend.onrender.com" : "http://localhost:3000");
+
+if (!VITE_API_BASE_URL) throw new Error("VITE_API_BASE_URL isn't defined in .env");
 
 const handleLogout = async () => {
   try {
@@ -22,6 +27,9 @@ const handleLogout = async () => {
 export const API: AxiosInstance = axios.create({
   baseURL: VITE_API_BASE_URL,
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 // AXIOS INTERCEPTOR FOR TOKEN REFRESH

@@ -18,7 +18,6 @@ export const AuthContextProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const checkSession = async () => {
-
       if (["/login", "/register"].includes(location.pathname)) {
         setLoadingAuth(false);
         return;
@@ -27,8 +26,9 @@ export const AuthContextProvider = ({ children }: Props) => {
       setLoadingAuth(true);
       try {
         const response = await getCurrentUser();
-        setUser(response.data.users);
-      } catch {
+        setUser(response.data.user);
+      } catch (err) {
+        console.error("Error fetching current user:", err);
         setUser(null);
       } finally {
         setLoadingAuth(false);
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }: Props) => {
     setError(null);
     try {
       const response = await loginUser(loginData);
-      setUser(response.data.users);
+      setUser(response.data.user);
 
       return true;
     } catch (error: unknown) {

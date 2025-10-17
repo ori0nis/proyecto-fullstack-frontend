@@ -3,6 +3,6 @@
 import type { PaginationMeta } from "../..";
 
 export interface UserData<T> {
-  users: T;
+  user: T;
   meta?: PaginationMeta;
 }

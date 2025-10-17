@@ -13,7 +13,7 @@ export const PrivateGuard = ({ requiredRole }: Props) => {
 
   if (!isAuth) return <Navigate to="/login" replace />;
 
-  if (requiredRole && !hasRole("admin")) return <Unauthorized />;
+  if (requiredRole && !hasRole(requiredRole)) return <Unauthorized />;
 
   return <Outlet />;
 };
