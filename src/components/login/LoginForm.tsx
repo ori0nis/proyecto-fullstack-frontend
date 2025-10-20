@@ -45,7 +45,7 @@ export const LoginForm = () => {
         reset();
 
         setTimeout(() => {
-          navigate("/myplants/profile");
+          navigate("/myplants/home/profile");
         }, 1500);
       } else {
         setSuccess(false);

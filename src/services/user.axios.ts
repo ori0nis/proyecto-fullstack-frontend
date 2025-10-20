@@ -157,6 +157,17 @@ export const changePassword = async (
   }
 };
 
+// GET USER PLANTS
+export const getUserPlants = async () => {
+  try {
+    const response = await API.get("/users/user/profile/plants");
+
+    return response.data.data;
+  } catch (error) {
+    throw axiosErrorHandler(error);
+  }
+};
+
 // ADD PLANT TO USER PROFILE (must be preceded by flexiblePlantSearch() in frontend flux)
 export const addPlantToUserProfile = async (
   plantId: string,

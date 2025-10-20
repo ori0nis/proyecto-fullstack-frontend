@@ -2,7 +2,7 @@ import { API } from "../config";
 import type { NewPlant, Plant, PlantResponse } from "../models/plant";
 import { axiosErrorHandler } from "../utils";
 
-// GET ALL PLANTS
+// GET ALL PLANTS (UNIVERSAL REPOSITORY)
 export const getAllPlants = async (page = 1, limit = 20): Promise<PlantResponse<Plant[]>> => {
   try {
     const response = await API.get("/plants/all-plants", { params: { page, limit } });
@@ -13,7 +13,7 @@ export const getAllPlants = async (page = 1, limit = 20): Promise<PlantResponse<
   }
 };
 
-// GET PLANT BY ID
+// GET PLANT BY ID (UNIVERSAL REPOSITORY)
 export const getPlantById = async (id: string): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get(`/plants/${id}`);
@@ -24,7 +24,7 @@ export const getPlantById = async (id: string): Promise<PlantResponse<Plant>> =>
   }
 };
 
-// GET PLANTS BY SCIENTIFIC NAME
+// GET PLANTS BY SCIENTIFIC NAME (UNIVERSAL REPOSITORY)
 export const getPlantsByScientificName = async (
   scientific_name: string,
   page = 1,
@@ -39,7 +39,7 @@ export const getPlantsByScientificName = async (
   }
 };
 
-// GET PLANTS BY COMMON NAME
+// GET PLANTS BY COMMON NAME (UNIVERSAL REPOSITORY)
 export const getPlantsByCommonName = async (
   common_name: string,
   page = 1,
@@ -54,7 +54,7 @@ export const getPlantsByCommonName = async (
   }
 };
 
-// GET PLANTS BY TYPE
+// GET PLANTS BY TYPE (UNIVERSAL REPOSITORY)
 export const getPlantsByType = async (type: string, page = 1, limit = 20): Promise<PlantResponse<Plant[]>> => {
   try {
     const response = await API.get(`/plants/search/type`, { params: { type, page, limit } });

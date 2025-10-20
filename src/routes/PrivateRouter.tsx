@@ -1,12 +1,17 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Profile } from "../pages/Profile";
+import { ProfilePage } from "../pages";
+import { UserLayout } from "../pages/layouts";
+import { FindFriends, UserNurseryPage } from "../pages/pages/user";
 
 export const PrivateRouter = () => {
   return (
     <Routes>
-      <Route path="" element={<Navigate to="profile" />} />
-      <Route path="profile" element={<Profile />} /* TODO: add element (layout) */ />
-      <Route path="users/search/username" /* TODO: add element */ />
+      <Route path="home/" element={<UserLayout />}>
+        <Route path="" element={<Navigate to="profile" />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="nursery" element={<UserNurseryPage />} />
+        <Route path="friends" element={<FindFriends />} />
+      </Route>
     </Routes>
   );
 };

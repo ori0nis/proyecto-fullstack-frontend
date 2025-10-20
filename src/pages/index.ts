@@ -1,3 +1,3 @@
-export * from "./Profile";
-export * from "./RegisterLayout";
-export * from "./LoginLayout";
+export * from "./layouts/RegisterLayout";
+export * from "./layouts/LoginLayout";
+export * from "./ProfilePage";
