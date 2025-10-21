@@ -55,9 +55,10 @@ export const RegisterForm = () => {
       } else {
         setSuccess(false);
       }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(error);
       alert("Register couldn't be completed");
+      
       if (error instanceof Error) {
         setError(error.message);
       } else {

@@ -1,7 +1,7 @@
 import { API } from "../config";
 import type { LoginUser, NewUser, PublicUser, UpdatedUser, UserProfile, UserResponse } from "../models/user";
 import { axiosErrorHandler } from "../utils";
-import type { NewUserPlant } from "../models/plant";
+import type { NewUserPlant, UserPlantData, UserPlantResponse } from "../models/plant";
 
 const VITE_API_AUTH_ENDPOINT = import.meta.env.VITE_API_AUTH_ENDPOINT;
 const VITE_API_REFRESH_TOKEN_ENDPOINT = import.meta.env.VITE_API_REFRESH_TOKEN_ENDPOINT;
@@ -158,11 +158,11 @@ export const changePassword = async (
 };
 
 // GET USER PLANTS
-export const getUserPlants = async () => {
+export const getUserPlants = async (): Promise<UserPlantResponse<UserPlantData>> => {
   try {
     const response = await API.get("/users/user/profile/plants");
 
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw axiosErrorHandler(error);
   }

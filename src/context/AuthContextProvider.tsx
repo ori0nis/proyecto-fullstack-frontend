@@ -27,6 +27,9 @@ export const AuthContextProvider = ({ children }: Props) => {
       try {
         const response = await getCurrentUser();
         setUser(response.data.user);
+        console.log(response.data.user);
+        console.log(response.data)
+      
       } catch (err) {
         console.error("Error fetching current user:", err);
         setUser(null);

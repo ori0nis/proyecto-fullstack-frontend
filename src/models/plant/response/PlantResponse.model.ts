@@ -1,4 +1,4 @@
-//? Mapping of the Plant mongoose document
+//? Mapping of the Plant response from the backend
 
 import type { PlantData } from "..";
 

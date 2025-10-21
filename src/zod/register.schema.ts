@@ -8,11 +8,7 @@ export const RegisterSchema = z
   .object({
     username: z.string().min(2, "Username must be at least 2 characters long").max(40, "Username is too long"),
     email: z.email("Invalid email"),
-    plant_care_skill_level: z
-      .enum(["beginner", "intermediate", "advanced", "Demeter"])
-      .refine((val) => ["beginner", "intermediate", "advanced", "Demeter"].includes(val), {
-        error: "Valid skill levels: beginner intermediate, advanced",
-      }),
+    plant_care_skill_level: z.enum(["beginner", "intermediate", "advanced", "Demeter"]),
     password: z
       .string()
       .min(8, "")
