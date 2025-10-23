@@ -1,10 +1,10 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { EditUserPlantFormValues } from "../../../../zod";
+import type { EditProfileFormValues } from "../../../../zod/edit-profile.schema";
 
 interface Props {
   label: string;
-  name: keyof EditUserPlantFormValues;
-  control: Control<EditUserPlantFormValues>;
+  name: keyof EditProfileFormValues;
+  control: Control<EditProfileFormValues>;
   type?: string;
   placeholder?: string;
   error?: FieldError;
@@ -12,7 +12,7 @@ interface Props {
   onBlur?: () => void;
 }
 
-export const InputEditUserPlant = ({
+export const InputEditProfile = ({
   label,
   name,
   control,
@@ -23,7 +23,7 @@ export const InputEditUserPlant = ({
   onBlur = () => {},
 }: Props) => {
   return (
-    <div className="">
+    <div>
       <label htmlFor={name}>{label}</label>
       <Controller
         name={name}

@@ -1,10 +1,10 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { EditUserPlantFormValues } from "../../../../zod";
+import type { ChangePasswordFormValues } from "../../../../zod";
 
 interface Props {
   label: string;
-  name: keyof EditUserPlantFormValues;
-  control: Control<EditUserPlantFormValues>;
+  name: keyof ChangePasswordFormValues;
+  control: Control<ChangePasswordFormValues>;
   type?: string;
   placeholder?: string;
   error?: FieldError;
@@ -12,7 +12,7 @@ interface Props {
   onBlur?: () => void;
 }
 
-export const InputEditUserPlant = ({
+export const InputChangePassword = ({
   label,
   name,
   control,
@@ -23,7 +23,7 @@ export const InputEditUserPlant = ({
   onBlur = () => {},
 }: Props) => {
   return (
-    <div className="">
+    <div>
       <label htmlFor={name}>{label}</label>
       <Controller
         name={name}
@@ -34,13 +34,7 @@ export const InputEditUserPlant = ({
               id={name}
               type={type}
               placeholder={placeholder}
-              onChange={(e) => {
-                if (type === "file" && e.target.files) {
-                  field.onChange(e.target.files[0]);
-                } else {
-                  field.onChange(e.target.value);
-                }
-              }}
+              {...field}
               onFocus={() => {
                 onFocus();
               }}
@@ -48,7 +42,7 @@ export const InputEditUserPlant = ({
                 field.onBlur();
                 onBlur();
               }}
-              className={`        ${error ? "" : ""}`}
+              className={`            ${error ? "" : ""}`}
             />
             {error && <p className="">{error.message}</p>}
           </>

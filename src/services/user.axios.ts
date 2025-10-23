@@ -1,5 +1,5 @@
 import { API } from "../config";
-import type { LoginUser, NewUser, PublicUser, UpdatedUser, UserProfile, UserResponse } from "../models/user";
+import type { LoginUser, NewUser, PublicUser, UserProfile, UserResponse } from "../models/user";
 import { axiosErrorHandler } from "../utils";
 import type { NewUserPlant, UserPlantData, UserPlantResponse } from "../models/plant";
 
@@ -113,21 +113,16 @@ export const getUserByUsername = async (username: string): Promise<UserProfile> 
 };
 
 // EDIT USER (in multipart form, to accept local images)
-export const editUser = async (id: string, updates: Partial<UpdatedUser>): Promise<UserResponse<PublicUser>> => {
+export const editUser = async (id: string, updates: Partial<NewUser>): Promise<UserResponse<PublicUser>> => {
   try {
     const formData = new FormData();
 
-    if (updates.email) formData.append("email", updates.email);
-    if (updates.username) formData.append("username", updates.username);
+    if (updates.email && updates.email.trim() !== "") formData.append("email", updates.email);
+    if (updates.username && updates.username.trim() !== "") formData.append("username", updates.username);
     if (updates.plant_care_skill_level) formData.append("plant_care_skill_level", updates.plant_care_skill_level);
-    if (updates.plants) {
-      updates.plants.forEach((plant) => {
-        formData.append("plants", plant);
-      });
-    }
     if (updates.plantImg) formData.append("imgPath", updates.plantImg); // imgPath mirrors the backend name
 
-    const response = await API.put(`/users/user/${id}`, formData, {
+    const response = await API.post(`/users/user/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -180,7 +175,7 @@ export const addPlantToUserProfile = async (
     formData.append("imgPath", newUserPlant.plantImg); // imgPath coincides with backend name
     formData.append("plantId", plantId);
 
-    const response = await API.post("/users/user", formData, {
+    const response = await API.post("/users/user/profile/new-plant", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

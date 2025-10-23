@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
-import { deleteUserPlant, getUserPlants } from "../../../../services";
-import type { UserPlant } from "../../../../models/plant";
+import { useState } from "react";
+import { deleteUserPlant } from "../../../../services";
 import { DeleteUserPlantModal, EditUserPlantModal } from "../../../modals";
 import { EditUserPlantForm } from "./EditUserPlantForm";
+import type { UserPlant } from "../../../../models/plant";
 
-export const UserPlantList = () => {
-  const [plants, setPlants] = useState<UserPlant[]>([]);
+interface Props {
+  plants: UserPlant[];
+  setPlants: React.Dispatch<React.SetStateAction<UserPlant[]>>;
+}
+
+export const UserPlantList = ({ plants, setPlants }: Props) => {
   const [editingPlant, setEditingPlant] = useState<string | null>(null);
   const [deletingPlant, setDeletingPlant] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPlants = async () => {
-      try {
-        const response = await getUserPlants();
-        setPlants(response.data.userPlants);
-      } catch (error) {
-        console.error("Error fetching plants: ", error);
-      }
-    };
-    fetchPlants();
-  }, []);
 
   const handleConfirmDelete = async (plantId: string) => {
     try {
@@ -41,10 +33,11 @@ export const UserPlantList = () => {
   return (
     <>
       <div>
-        <h2>Your plants:</h2>
+        {/* // TODO: Add grid and list view */}
+        
         {plants.map((plant) => (
           <div key={plant._id}>
-            <p>{plant.imgPublicUrl}</p>
+            <img src={plant.imgPublicUrl} alt={plant.nameByUser} />
             <p>{plant.nameByUser}</p>
             <button onClick={() => setEditingPlant(plant._id)}>Edit</button>
             {editingPlant === plant._id && (

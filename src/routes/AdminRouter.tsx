@@ -1,5 +1,4 @@
-import { Route } from "react-router-dom";
-import { BrokenRouteAvoider } from ".";
+import { Route, Routes } from "react-router-dom";
 
 const VITE_API_ADMIN_ENDPOINT_SEARCH_ALL = import.meta.env.VITE_API_ADMIN_ENDPOINT_SEARCH_ALL;
 const VITE_API_ADMIN_ENDPOINT_SEARCH_ID = import.meta.env.VITE_API_ADMIN_ENDPOINT_SEARCH_ID;
@@ -11,10 +10,10 @@ if (!VITE_API_ADMIN_ENDPOINT_SEARCH_EMAIL) throw new Error("VITE_API_ADMIN_ENDPO
 
 export const AdminRouter = () => {
   return (
-    <BrokenRouteAvoider>
+    <Routes>
       <Route path={VITE_API_ADMIN_ENDPOINT_SEARCH_ALL} /* TODO: add element */ />
       <Route path={VITE_API_ADMIN_ENDPOINT_SEARCH_ID} /* TODO: add element */ />
       <Route path={VITE_API_ADMIN_ENDPOINT_SEARCH_EMAIL} /* TODO: add element */ />
-    </BrokenRouteAvoider>
+    </Routes>
   );
 };

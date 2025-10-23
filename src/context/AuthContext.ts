@@ -6,6 +6,7 @@ interface AuthContextProps {
   register: (user: NewUser) => Promise<boolean>;
   login: (user: LoginUser) => Promise<boolean>;
   logout: () => Promise<void>;
+  updateUser: (user: PublicUser) => void;
   loadingAuth: boolean;
   error: string | null;
   setError: (value: string | null) => void;

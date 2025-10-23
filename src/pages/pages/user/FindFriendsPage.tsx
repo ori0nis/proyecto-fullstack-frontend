@@ -1,6 +1,6 @@
 import { useAuth } from "../../../context";
 
-export const FindFriends = () => {
+export const FindFriendsPage = () => {
   const { user } = useAuth();
 
   const person = user?.username;

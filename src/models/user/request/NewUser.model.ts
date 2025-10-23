@@ -5,4 +5,5 @@ export interface NewUser {
   email: string;
   password: string;
   plant_care_skill_level: string;
+  plantImg?: File;
 }

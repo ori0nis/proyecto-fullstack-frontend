@@ -1,13 +1,13 @@
+import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onAccept: () => void;
-  onCancel: () => void;
+  children: ReactNode;
 }
 
-export const DeleteUserPlantModal = ({ isOpen, onClose, onAccept, onCancel }: Props) => {
+export const AddNewUserPlantModal = ({ isOpen, onClose, children }: Props) => {
   if (!isOpen) return null;
 
   return createPortal(
@@ -17,11 +17,9 @@ export const DeleteUserPlantModal = ({ isOpen, onClose, onAccept, onCancel }: Pr
           ✕
         </button>
 
-        <h3>Are you sure you want to delete this plant?</h3>
-        <button onClick={onAccept}>Accept</button>
-        <button onClick={onCancel}>Cancel</button>
+        {children}
       </div>
     </div>,
-    document.getElementById("delete-user-plant-modal") as HTMLElement
+    document.getElementById("add-user-plant-modal") as HTMLElement
   );
 };
