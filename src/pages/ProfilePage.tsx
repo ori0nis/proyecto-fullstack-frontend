@@ -28,8 +28,13 @@ export const ProfilePage = () => {
   return (
     <>
       <h1>Hello {person}! Welcome to your profile</h1>
-      {user?.imgPublicUrl && <img src={user?.imgPublicUrl} alt={user?.username} />}
-      {!user?.imgPublicUrl && <img className="w-15" src={"/images/user-placeholder.png"} alt="user profile pic" />}
+      {user && console.log(user)}
+      {user && user.imgPublicUrl ? (
+        <img src={user.imgPublicUrl} alt={user.username} />
+      ) : (
+        <img className="w-15" src={"/images/user-placeholder.png"} alt="user profile pic" />
+      )}
+      {/* {!user?.imgPublicUrl && <img className="w-15" src={"/images/user-placeholder.png"} alt="user profile pic" />} */}
       <button onClick={() => navigate("edit-profile")}>Edit your profile</button>
       <UserProfileHeader fetchPlants={fetchPlants} />
       <UserPlantList plants={plants} setPlants={setPlants} />

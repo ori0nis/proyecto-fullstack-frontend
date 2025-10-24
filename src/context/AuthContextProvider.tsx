@@ -16,10 +16,6 @@ export const AuthContextProvider = ({ children }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const updateUser = (updatedUser: PublicUser) => {
-    setUser(updatedUser);
-  };
-
   useEffect(() => {
     const checkSession = async () => {
       if (["/login", "/register"].includes(location.pathname)) {
@@ -31,8 +27,8 @@ export const AuthContextProvider = ({ children }: Props) => {
       try {
         const response = await getCurrentUser();
         setUser(response.data.user);
-      } catch (err) {
-        console.error("Error fetching current user:", err);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
         setUser(null);
       } finally {
         setLoadingAuth(false);
@@ -65,7 +61,7 @@ export const AuthContextProvider = ({ children }: Props) => {
       setUser(response.data.user);
 
       return true;
-    } catch (error: unknown) {
+    } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected login error";
       setError(message);
       setUser(null);
@@ -100,7 +96,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, register, login, logout, updateUser, loadingAuth, error, setError, isAuth: !!user, hasRole }}
+      value={{ user, register, login, logout, loadingAuth, error, setError, isAuth: !!user, hasRole }}
     >
       {children}
     </AuthContext.Provider>

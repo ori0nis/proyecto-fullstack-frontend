@@ -120,9 +120,10 @@ export const editUser = async (id: string, updates: Partial<NewUser>): Promise<U
     if (updates.email && updates.email.trim() !== "") formData.append("email", updates.email);
     if (updates.username && updates.username.trim() !== "") formData.append("username", updates.username);
     if (updates.plant_care_skill_level) formData.append("plant_care_skill_level", updates.plant_care_skill_level);
-    if (updates.plantImg) formData.append("imgPath", updates.plantImg); // imgPath mirrors the backend name
+    if (updates.profilePic) formData.append("imgPath", updates.profilePic); // imgPath mirrors the backend name
+    if (updates.password) formData.append("currentPassword", updates.password); //currentPassword mirrors the backend name
 
-    const response = await API.post(`/users/user/${id}`, formData, {
+    const response = await API.put(`/users/user/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

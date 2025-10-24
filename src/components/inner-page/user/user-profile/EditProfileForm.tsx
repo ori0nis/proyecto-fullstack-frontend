@@ -23,10 +23,11 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
       username: "",
       email: "",
       plant_care_skill_level: undefined,
+      password: "",
     },
   });
 
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -43,7 +44,6 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
         setSuccess(true);
         alert("Profile updated successfully!");
         onSuccess();
-        updateUser(success.data.user);
       } else {
         setSuccess(false);
         alert("There was an error updating your profile");
@@ -97,6 +97,14 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
             type="text"
             placeholder="Plant care skill level..."
             error={errors.plant_care_skill_level}
+          />
+          <h3>Confirm your password to complete your request: </h3>
+          <InputEditProfile
+            label="Password: "
+            name="password"
+            control={control}
+            type="password"
+            error={errors.password}
           />
           <button type="submit" disabled={loading}>
             Submit
