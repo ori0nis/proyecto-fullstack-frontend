@@ -173,7 +173,7 @@ export const addPlantToUserProfile = async (
     const formData = new FormData();
 
     formData.append("nameByUser", newUserPlant.nameByUser);
-    formData.append("imgPath", newUserPlant.plantImg); // imgPath coincides with backend name
+    if (newUserPlant.plantImg) formData.append("imgPath", newUserPlant.plantImg); // imgPath coincides with backend name
     formData.append("plantId", plantId);
 
     const response = await API.post("/users/user/profile/new-plant", formData, {
@@ -223,9 +223,9 @@ export const deleteUserPlant = async (plantId: string): Promise<UserResponse<Pub
 };
 
 // DELETE USER
-export const deleteUser = async (id: string): Promise<UserResponse<PublicUser>> => {
+export const deleteUser = async (id: string, password: string): Promise<UserResponse<PublicUser>> => {
   try {
-    const response = await API.delete(`/users/user/${id}`);
+    const response = await API.delete(`/users/user/${id}`, { data: { password } });
 
     return response.data;
   } catch (error) {

@@ -1,14 +1,9 @@
 import { useForm } from "react-hook-form";
-import { EditUserPlantSchema, type EditUserPlantFormValues } from "../../../../zod";
+import { AddUserPlantSchema, type AddUserPlantFormValues } from "../../../../zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { addPlantToUserProfile } from "../../../../services";
-import { InputEditUserPlant } from "./InputEditUserPlant";
-
-type FormValues = {
-  nameByUser: string;
-  plantImg: File;
-};
+import { InputAddUserPlant } from "..";
 
 interface Props {
   plantId: string;
@@ -22,8 +17,8 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
     control,
     reset,
     formState: { errors },
-  } = useForm<EditUserPlantFormValues>({
-    resolver: zodResolver(EditUserPlantSchema),
+  } = useForm<AddUserPlantFormValues>({
+    resolver: zodResolver(AddUserPlantSchema),
     mode: "onChange",
     defaultValues: {
       nameByUser: "",
@@ -34,7 +29,7 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: AddUserPlantFormValues) => {
     setLoading(true);
     try {
       const success = await addPlantToUserProfile(plantId, data);
@@ -67,7 +62,7 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
       <div>
         <h3>Add plant to your plot</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
-          <InputEditUserPlant
+          <InputAddUserPlant
             label="Your plant's name: "
             name="nameByUser"
             type="text"
@@ -75,7 +70,7 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
             error={errors.nameByUser}
             control={control}
           />
-          <InputEditUserPlant
+          <InputAddUserPlant
             label="Plant img: "
             name="plantImg"
             type="file"

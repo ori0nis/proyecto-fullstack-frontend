@@ -2,5 +2,5 @@
 
 export interface NewUserPlant {
   nameByUser: string;
-  plantImg: File;
+  plantImg?: File;
 }

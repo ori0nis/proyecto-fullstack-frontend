@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useOutletContext } from "react-router-dom";
 import { EditProfileSchema, type EditProfileFormValues } from "../../../../zod/";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputEditProfile } from "./InputEditProfile";
@@ -6,12 +7,12 @@ import { useState } from "react";
 import { editUser } from "../../../../services";
 import { useAuth } from "../../../../context";
 
-interface Props {
-  key: number;
-  onSuccess: () => void;
+interface EditProfileContext {
+  handleFormSuccess: () => void;
+  formKey: number;
 }
 
-export const EditProfileForm = ({ onSuccess }: Props) => {
+export const EditProfileForm = () => {
   const {
     handleSubmit,
     control,
@@ -27,6 +28,7 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
     },
   });
 
+  const { handleFormSuccess, formKey } = useOutletContext<EditProfileContext>();
   const { user } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,19 +39,28 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
     setError(null);
     setSuccess(false);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...otherFields } = data;
+
+    const hasChanges = Object.values(otherFields).some((value) => value !== "" && value !== undefined);
+
+    if (!hasChanges) {
+      alert("No changes detected. Please update at least one field.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const success = await editUser(user!._id, data);
 
       if (success) {
         setSuccess(true);
         alert("Profile updated successfully!");
-        onSuccess();
+        handleFormSuccess();
       } else {
         setSuccess(false);
         alert("There was an error updating your profile");
       }
-
-      // TODO: if (!passwordChanged && !hasOtherProfileChanges) alert("No changes detected");
     } catch (error) {
       console.error(error);
       alert("There was an error editing your profile");
@@ -59,14 +70,15 @@ export const EditProfileForm = ({ onSuccess }: Props) => {
       } else {
         setError("Error editing your profile");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <div>
-        <form action="post" onSubmit={handleSubmit(onSubmit)}>
-          {/* // TODO: Service to check if username exists */}
+        <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputEditProfile
             label="New username: "
             name="username"

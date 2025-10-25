@@ -6,13 +6,14 @@ import { changePassword } from "../../../../services";
 import { useState } from "react";
 import { InputChangePassword } from "./InputChangePassword";
 import { PasswordChecklist } from "../../../register";
+import { useOutletContext } from "react-router-dom";
 
-interface Props {
-  key: number;
-  onSuccess: () => void;
+interface EditProfileContext {
+  formKey: number;
+  handleFormSuccess: () => void;
 }
 
-export const ChangePasswordForm = ({ onSuccess }: Props) => {
+export const ChangePasswordForm = () => {
   const {
     handleSubmit,
     control,
@@ -33,6 +34,7 @@ export const ChangePasswordForm = ({ onSuccess }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
   const [new_password, old_password, confirm_password] = watch(["new_password", "old_password", "confirm_password"]);
+  const { handleFormSuccess, formKey } = useOutletContext<EditProfileContext>();
 
   const onSubmit = async (data: ChangePasswordFormValues) => {
     setLoading(true);
@@ -48,7 +50,7 @@ export const ChangePasswordForm = ({ onSuccess }: Props) => {
         if (success) {
           setSuccess(true);
           alert("Password successfully changed!");
-          onSuccess();
+          handleFormSuccess();
         }
       }
     } catch (error) {
@@ -66,7 +68,7 @@ export const ChangePasswordForm = ({ onSuccess }: Props) => {
   return (
     <>
       <div>
-        <form action="post" onSubmit={handleSubmit(onSubmit)}>
+        <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputChangePassword
             label="Old password: "
             name="old_password"

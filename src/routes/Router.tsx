@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AdminRouter, NotFound, PrivateGuard, PrivateRouter } from ".";
-import { AuthContextProvider } from "../context";
+import { AuthContextProvider, EditProfileContextProvider } from "../context";
 import { LoginLayout, RegisterLayout } from "../pages";
 
 const VITE_API_PRIVATE_ENDPOINT = import.meta.env.VITE_API_PRIVATE_ENDPOINT;
@@ -19,26 +19,28 @@ export const Router = ({ children }: Props) => {
     <>
       <BrowserRouter>
         <AuthContextProvider>
-          <Routes>
-            <Route path="/register" element={<RegisterLayout />} /* TODO: add element */ />
-            <Route path="/login" element={<LoginLayout />} /* TODO: add element */ />
-            <Route path="/logout" /* TODO: add element */ />
+          <EditProfileContextProvider>
+            <Routes>
+              <Route path="/register" element={<RegisterLayout />} />
+              <Route path="/login" element={<LoginLayout />} />
+              <Route path="/logout" />
 
-            {/* Private router */}
-            <Route element={<PrivateGuard />}>
-              <Route path={`${VITE_API_PRIVATE_ENDPOINT}/*`} element={<PrivateRouter />} />
-            </Route>
+              {/* Private router */}
+              <Route element={<PrivateGuard />}>
+                <Route path={`${VITE_API_PRIVATE_ENDPOINT}/*`} element={<PrivateRouter />} />
+              </Route>
 
-            {/* Admin router */}
-            <Route element={<PrivateGuard requiredRole="admin" />}>
-              <Route path={VITE_API_ADMIN_ENDPOINT} element={<AdminRouter />} />
-            </Route>
+              {/* Admin router */}
+              <Route element={<PrivateGuard requiredRole="admin" />}>
+                <Route path={VITE_API_ADMIN_ENDPOINT} element={<AdminRouter />} />
+              </Route>
 
-            {/* Any other wrong routes */}
-            <Route path="*" element={<Navigate to="/login" replace />} />
-            <Route path="/404" element={<NotFound />} />
-          </Routes>
-          {children}
+              {/* Any other wrong routes */}
+              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="/404" element={<NotFound />} />
+            </Routes>
+            {children}
+          </EditProfileContextProvider>
         </AuthContextProvider>
       </BrowserRouter>
     </>

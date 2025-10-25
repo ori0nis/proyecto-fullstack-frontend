@@ -7,7 +7,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export const DeleteUserPlantModal = ({ isOpen, onClose, onAccept, onCancel }: Props) => {
+export const ConfirmDeleteModal = ({ isOpen, onClose, onAccept, onCancel }: Props) => {
   if (!isOpen) return null;
 
   return createPortal(
@@ -17,11 +17,11 @@ export const DeleteUserPlantModal = ({ isOpen, onClose, onAccept, onCancel }: Pr
           ✕
         </button>
 
-        <h3>Are you sure you want to delete this plant?</h3>
+        <h3>Are you sure you want to proceed?</h3>
         <button onClick={onAccept}>Accept</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
     </div>,
-    document.getElementById("delete-user-plant-modal") as HTMLElement
+    document.getElementById("delete-modal") as HTMLElement
   );
 };

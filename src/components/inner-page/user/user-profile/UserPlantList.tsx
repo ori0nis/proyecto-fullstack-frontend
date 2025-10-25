@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { deleteUserPlant } from "../../../../services";
-import { DeleteUserPlantModal, EditUserPlantModal } from "../../../modals";
+import { ConfirmDeleteModal, EditUserPlantModal } from "../../../modals";
 import { EditUserPlantForm } from "./EditUserPlantForm";
 import type { UserPlant } from "../../../../models/plant";
 
@@ -34,10 +34,10 @@ export const UserPlantList = ({ plants, setPlants }: Props) => {
     <>
       <div>
         {/* // TODO: Add grid and list view */}
-        
+
         {plants.map((plant) => (
           <div key={plant._id}>
-            <img src={plant.imgPublicUrl} alt={plant.nameByUser} />
+            <img src={plant.imgPublicUrl} className="w-25" alt={plant.nameByUser} />
             <p>{plant.nameByUser}</p>
             <button onClick={() => setEditingPlant(plant._id)}>Edit</button>
             {editingPlant === plant._id && (
@@ -47,7 +47,7 @@ export const UserPlantList = ({ plants, setPlants }: Props) => {
             )}
             <button onClick={() => setDeletingPlant(plant._id)}>Delete</button>
             {deletingPlant === plant._id && (
-              <DeleteUserPlantModal
+              <ConfirmDeleteModal
                 isOpen={true}
                 onClose={() => setDeletingPlant(null)}
                 onAccept={() => handleConfirmDelete(plant._id)}
