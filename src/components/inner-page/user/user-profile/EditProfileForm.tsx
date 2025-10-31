@@ -16,6 +16,7 @@ export const EditProfileForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<EditProfileFormValues>({
     resolver: zodResolver(EditProfileSchema),
@@ -56,6 +57,7 @@ export const EditProfileForm = () => {
       if (success) {
         setSuccess(true);
         alert("Profile updated successfully!");
+        reset();
         handleFormSuccess();
       } else {
         setSuccess(false);

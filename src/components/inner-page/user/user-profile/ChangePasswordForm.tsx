@@ -18,6 +18,7 @@ export const ChangePasswordForm = () => {
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(ChangePasswordSchema),
@@ -50,6 +51,7 @@ export const ChangePasswordForm = () => {
         if (success) {
           setSuccess(true);
           alert("Password successfully changed!");
+          reset();
           handleFormSuccess();
         }
       }

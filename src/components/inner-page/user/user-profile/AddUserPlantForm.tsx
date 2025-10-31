@@ -34,6 +34,14 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
     try {
       const success = await addPlantToUserProfile(plantId, data);
 
+      const hasChanges = Object.values(data).some((value) => value !== "" || value !== undefined);
+
+      if (!hasChanges) {
+        alert("No changes detected, please fill at least one field");
+        setLoading(false);
+        return;
+      }
+
       if (success) {
         setSuccess(true);
         reset();

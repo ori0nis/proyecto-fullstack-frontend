@@ -16,6 +16,7 @@ export const DeleteAccountForm = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<DeleteAccountFormValues>({
     resolver: zodResolver(DeleteAccountSchema),
@@ -43,6 +44,7 @@ export const DeleteAccountForm = () => {
       if (success) {
         setSuccess(true);
         alert("Your account was successfully deleted");
+        reset();
         handleFormSuccess();
         logout();
       }
