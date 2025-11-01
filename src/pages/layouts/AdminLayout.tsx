@@ -1,12 +1,18 @@
+import { Outlet } from "react-router-dom";
+import { AdminSidebar } from "../../components/inner-page/admin";
+import { Footer } from "../../components/inner-page";
+
 export const AdminLayout = () => {
-  /* Should return:
-    
-    - Sidebar with:
-        - Admin Panel with:
-            - MyPlants Nursery (with management options)
-            - Find users (with management options)
-        - Your profile
-    - Header
-    - Footer
-    */
+  return (
+    <>
+      {/* Sidebar */}
+      <AdminSidebar />
+
+      {/* Outlet */}
+      <Outlet />
+
+      {/* Footer */}
+      <Footer />
+    </>
+  );
 };

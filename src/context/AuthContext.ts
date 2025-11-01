@@ -4,7 +4,7 @@ import type { LoginUser, NewUser, PublicUser } from "../models/user";
 interface AuthContextProps {
   user: PublicUser | null;
   register: (user: NewUser) => Promise<boolean>;
-  login: (user: LoginUser) => Promise<boolean>;
+  login: (user: LoginUser) => Promise<PublicUser | null>;
   logout: () => Promise<void>;
   loadingAuth: boolean;
   error: string | null;

@@ -32,7 +32,7 @@ export const Router = ({ children }: Props) => {
 
               {/* Admin router */}
               <Route element={<PrivateGuard requiredRole="admin" />}>
-                <Route path={VITE_API_ADMIN_ENDPOINT} element={<AdminRouter />} />
+                <Route path={`${VITE_API_ADMIN_ENDPOINT}/*`} element={<AdminRouter />} />
               </Route>
 
               {/* Any other wrong routes */}

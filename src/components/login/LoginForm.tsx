@@ -38,14 +38,14 @@ export const LoginForm = () => {
     setError(null);
 
     try {
-      const success = await login(data);
+      const loggedUser = await login(data);
 
-      if (success) {
+      if (loggedUser) {
         setSuccess(true);
         reset();
 
         setTimeout(() => {
-          navigate("/myplants/home/profile");
+          navigate(`/myplants/home/profile/${loggedUser.username}`);
         }, 1500);
       } else {
         setSuccess(false);

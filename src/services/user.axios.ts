@@ -106,7 +106,7 @@ export const getUserByUsername = async (username: string): Promise<UserProfile> 
   try {
     const response = await API.get("/users/search/user/username", { params: { username } });
 
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw axiosErrorHandler(error);
   }

@@ -54,18 +54,18 @@ export const AuthContextProvider = ({ children }: Props) => {
     }
   };
 
-  const login = async (loginData: LoginUser): Promise<boolean> => {
+  const login = async (loginData: LoginUser): Promise<PublicUser | null> => {
     setError(null);
+
     try {
       const response = await loginUser(loginData);
       setUser(response.data.user);
-
-      return true;
+      return response.data.user;
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected login error";
       setError(message);
       setUser(null);
-      return false;
+      return null;
     }
   };
 

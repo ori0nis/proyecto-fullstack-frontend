@@ -13,7 +13,7 @@ export const EditProfileLayout = () => {
       {/* Form navigate buttons */}
       <Link to="">Edit your profile</Link>
       <Link to="change-password">Change your password</Link>
-      <Link to="delete-account">Delete your account</Link> {/* // TODO */}
+      <Link to="delete-account">Delete your account</Link>
       
       {/* Outlet shows applicable form according to Link click */}
       <Outlet context={{ handleFormSuccess, formKey }} />
