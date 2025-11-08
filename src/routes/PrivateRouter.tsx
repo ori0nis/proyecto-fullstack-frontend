@@ -17,7 +17,7 @@ export const PrivateRouter = () => {
         <Route path="" element={<Navigate to={`profile/${user.username}`} replace />} />
 
         {/* Rendered profile */}
-        <Route path={`profile/:username`} element={<ProfileLayout />} />
+        <Route path="profile/:username" element={<ProfileLayout />} />
 
         {/* Routes relative to profile editing */}
         <Route path="profile/:username/edit-profile/" element={<EditProfileLayout />}>
@@ -32,7 +32,6 @@ export const PrivateRouter = () => {
 
         {/* Catch-all */}
         <Route path="*" element={<Navigate to={`/myplants/home/profile/${user.username}`} replace />} />
-
       </Route>
     </Routes>
   );

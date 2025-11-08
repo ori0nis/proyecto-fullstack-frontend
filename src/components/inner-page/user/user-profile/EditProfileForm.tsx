@@ -6,13 +6,15 @@ import { InputEditProfile } from "./InputEditProfile";
 import { useState } from "react";
 import { editUser } from "../../../../services";
 import { useAuth } from "../../../../context";
+import type { PublicUser } from "../../../../models/user";
 
-interface EditProfileContext {
-  handleFormSuccess: () => void;
-  formKey: number;
+//? Makes this form reusable for admin
+interface Props {
+  targetUser?: PublicUser;
+  onSuccess?: () => void;
 }
 
-export const EditProfileForm = () => {
+export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
   const {
     handleSubmit,
     control,
@@ -29,8 +31,13 @@ export const EditProfileForm = () => {
     },
   });
 
-  const { handleFormSuccess, formKey } = useOutletContext<EditProfileContext>();
+  //? Context props
+  const outletContext = useOutletContext<{ handleFormSuccess: () => void; formKey: number } | null>();
+  const handleFormSuccess = outletContext?.handleFormSuccess ?? (() => {});
+  const formKey = outletContext?.formKey ?? 0;
+
   const { user } = useAuth();
+  const userBeingEdited = targetUser || user;
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -52,13 +59,14 @@ export const EditProfileForm = () => {
     }
 
     try {
-      const success = await editUser(user!._id, data);
+      const success = await editUser(userBeingEdited!._id, data);
 
       if (success) {
         setSuccess(true);
         alert("Profile updated successfully!");
         reset();
-        handleFormSuccess();
+        handleFormSuccess(); //? For user flux (comes from outlet context)
+        onSuccess?.(); //? For admin flux (comes from AdminEditUserPage prop)
       } else {
         setSuccess(false);
         alert("There was an error updating your profile");
@@ -112,7 +120,10 @@ export const EditProfileForm = () => {
             placeholder="Plant care skill level..."
             error={errors.plant_care_skill_level}
           />
-          <h3>Confirm your password to complete your request: </h3>
+
+          {user?.role === "admin" && <h3>Input your password to complete user edit: </h3>}
+          {user?.role === "user" && <h3>Confirm your password to complete your request:</h3>}
+
           <InputEditProfile
             label="Password: "
             name="password"

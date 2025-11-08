@@ -1,7 +1,7 @@
 import { API } from "../config";
 import type { LoginUser, NewUser, PublicUser, UserProfile, UserResponse } from "../models/user";
 import { axiosErrorHandler } from "../utils";
-import type { NewUserPlant, UserPlantData, UserPlantResponse } from "../models/plant";
+import type { NewUserPlant, UserPlant, UserPlantResponse } from "../models/plant";
 
 const VITE_API_AUTH_ENDPOINT = import.meta.env.VITE_API_AUTH_ENDPOINT;
 const VITE_API_REFRESH_TOKEN_ENDPOINT = import.meta.env.VITE_API_REFRESH_TOKEN_ENDPOINT;
@@ -69,7 +69,7 @@ export const logoutUser = async (): Promise<void> => {
 };
 
 // GET ALL USERS (ADMIN ONLY)
-export const getAllUsers = async (page = 1, limit = 20): Promise<UserResponse<PublicUser[]>> => {
+export const getAllUsers = async (page = 1, limit = 20): Promise<UserResponse<PublicUser>> => {
   try {
     const response = await API.get("/users/search/all-users", { params: { page, limit } });
 
@@ -102,11 +102,22 @@ export const getUserByEmail = async (email: string): Promise<UserResponse<Public
 };
 
 // GET USER BY USERNAME (PUBLIC)
-export const getUserByUsername = async (username: string): Promise<UserProfile> => {
+export const getUserByUsername = async (username: string): Promise<UserResponse<UserProfile>> => {
   try {
     const response = await API.get("/users/search/user/username", { params: { username } });
 
     return response.data.data;
+  } catch (error) {
+    throw axiosErrorHandler(error);
+  }
+};
+
+// GET USER BY USERNAME (ADMIN ONLY)
+export const getUserByUsernameAdmin = async (username: string): Promise<UserResponse<PublicUser>> => {
+  try {
+    const response = await API.get("/users/search/user/username", { params: { username } });
+
+    return response.data;
   } catch (error) {
     throw axiosErrorHandler(error);
   }
@@ -154,7 +165,7 @@ export const changePassword = async (
 };
 
 // GET USER PLANTS
-export const getUserPlants = async (): Promise<UserPlantResponse<UserPlantData>> => {
+export const getUserPlants = async (): Promise<UserPlantResponse<UserPlant>> => {
   try {
     const response = await API.get("/users/user/profile/plants");
 

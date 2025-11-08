@@ -16,11 +16,13 @@ export const OtherUserProfilePage = () => {
 
       const fetchUser = async () => {
         try {
-          const userProfile = await getUserByUsername(username);
+          const response = await getUserByUsername(username);
 
-          if (userProfile) {
+          if (response?.data?.users && response.data.users.length > 0) {
+            const userProfile = response.data.users[0];
             setSuccess(true);
-            setFriend(userProfile)
+            setFriend(userProfile);
+            console.log(userProfile);
           } else {
             setSuccess(false);
           }

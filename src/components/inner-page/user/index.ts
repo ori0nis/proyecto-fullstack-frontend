@@ -10,7 +10,6 @@ export * from "./user-profile/InputEditProfile";
 export * from "./user-profile/EditProfileForm";
 export * from "./user-profile/InputChangePassword";
 export * from "./user-profile/ChangePasswordForm";
-export * from "./user-nursery/UserNursery";
 export * from "./user-nursery/NewNurseryPlantForm";
 export * from "./user-nursery/InputNewNurseryPlant";
 export * from "./user-profile/InputDeleteAccount";

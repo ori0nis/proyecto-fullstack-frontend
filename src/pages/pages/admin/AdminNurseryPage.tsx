@@ -1,6 +1,6 @@
 import { PlantNursery } from "../../../components/inner-page";
 
-export const UserNurseryPage = () => {
+export const AdminNurseryPage = () => {
   return (
     <>
       <PlantNursery />

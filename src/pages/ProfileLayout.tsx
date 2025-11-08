@@ -17,19 +17,21 @@ export const ProfileLayout = () => {
   const fetchPlants = async () => {
     try {
       const response = await getUserPlants();
-      setPlants(response.data.userPlants);
+
+      if (response.data && response.data.userPlants) {
+        setPlants(response.data.userPlants);
+      } else {
+        setPlants([]);
+      }
     } catch (error) {
       console.error("Error fetching plants: ", error);
+      setPlants([]);
     }
   };
 
   useEffect(() => {
     if (isMyProfile) fetchPlants();
   }, [isMyProfile]);
-
-  useEffect(() => {
-    console.log(user?.imgPublicUrl);
-  });
 
   return isMyProfile ? (
     <div>

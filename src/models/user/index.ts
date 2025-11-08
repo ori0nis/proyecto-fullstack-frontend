@@ -4,4 +4,3 @@ export * from "./request/NewUser.model";
 export * from "./request/LoginUser.model";
 export * from "./request/UserProfile.model";
 export * from "./response/UserResponse.model";
-export * from "./response/UserData.model";

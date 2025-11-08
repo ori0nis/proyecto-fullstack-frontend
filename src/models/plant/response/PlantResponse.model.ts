@@ -1,9 +1,12 @@
 //? Mapping of the Plant response from the backend
 
-import type { PlantData } from "..";
+import type { PaginationMeta } from "../../PaginationMeta.model";
 
 export interface PlantResponse<T> {
   message: string;
   status: number;
-  data: PlantData<T>;
+  data: {
+    plants: T[];
+    meta: PaginationMeta | null;
+  } | null;
 }

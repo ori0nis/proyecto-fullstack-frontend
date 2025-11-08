@@ -1,9 +1,12 @@
 //? Generic User response from the MyPlants API
 
-import type { UserData } from "..";
+import type { PaginationMeta } from "../..";
 
 export interface UserResponse<T> {
   message: string;
   status: number;
-  data: UserData<T>;
+  data: {
+    users: T[];
+    meta: PaginationMeta | null;
+  } | null;
 }

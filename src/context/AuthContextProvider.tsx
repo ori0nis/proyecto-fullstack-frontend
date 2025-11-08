@@ -26,7 +26,11 @@ export const AuthContextProvider = ({ children }: Props) => {
       setLoadingAuth(true);
       try {
         const response = await getCurrentUser();
-        setUser(response.data.user);
+        if (response.data && response.data.users && response.data.users.length > 0) {
+          setUser(response.data.users[0]);
+        } else {
+          setUser(null);
+        }
       } catch (error) {
         console.error("Error fetching current user:", error);
         setUser(null);
@@ -59,8 +63,16 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     try {
       const response = await loginUser(loginData);
-      setUser(response.data.user);
-      return response.data.user;
+
+      if (response.data && response.data.users && response.data.users.length > 0) {
+        const loggedUser = response.data.users[0];
+        setUser(loggedUser);
+        return loggedUser;
+      } else {
+        setUser(null);
+        setError("No user data received from server");
+        return null;
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected login error";
       setError(message);

@@ -41,12 +41,21 @@ export const LoginForm = () => {
       const loggedUser = await login(data);
 
       if (loggedUser) {
-        setSuccess(true);
-        reset();
+        if (loggedUser.role === "user") {
+          setSuccess(true);
+          reset();
 
-        setTimeout(() => {
-          navigate(`/myplants/home/profile/${loggedUser.username}`);
-        }, 1500);
+          setTimeout(() => {
+            navigate(`/myplants/home/profile/${loggedUser.username}`);
+          }, 1500);
+        } else {
+          setSuccess(true);
+          reset();
+
+          setTimeout(() => {
+            navigate(`/myplants/admin/home/profile/${loggedUser.username}`);
+          }, 1500);
+        }
       } else {
         setSuccess(false);
       }

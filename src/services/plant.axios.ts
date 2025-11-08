@@ -3,7 +3,7 @@ import type { NewPlant, Plant, PlantResponse } from "../models/plant";
 import { axiosErrorHandler } from "../utils";
 
 // GET ALL PLANTS (UNIVERSAL REPOSITORY)
-export const getAllPlants = async (page = 1, limit = 20): Promise<PlantResponse<Plant[]>> => {
+export const getAllPlants = async (page = 1, limit = 20): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get("/plants/all-plants", { params: { page, limit } });
 
@@ -29,7 +29,7 @@ export const getPlantsByScientificName = async (
   scientific_name: string,
   page = 1,
   limit = 20
-): Promise<PlantResponse<Plant[]>> => {
+): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get(`/plants/search/scientific-name`, { params: { scientific_name, page, limit } });
 
@@ -44,7 +44,7 @@ export const getPlantsByCommonName = async (
   common_name: string,
   page = 1,
   limit = 20
-): Promise<PlantResponse<Plant[]>> => {
+): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get(`/plants/search/common-name`, { params: { common_name, page, limit } });
 
@@ -55,7 +55,7 @@ export const getPlantsByCommonName = async (
 };
 
 // GET PLANTS BY TYPE (UNIVERSAL REPOSITORY)
-export const getPlantsByType = async (type: string, page = 1, limit = 20): Promise<PlantResponse<Plant[]>> => {
+export const getPlantsByType = async (type: string, page = 1, limit = 20): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get(`/plants/search/type`, { params: { type, page, limit } });
 
@@ -66,7 +66,7 @@ export const getPlantsByType = async (type: string, page = 1, limit = 20): Promi
 };
 
 // FLEXIBLE PLANT SEARCH (meant to be the pre-search of UserPlant add)
-export const flexiblePlantSearch = async (query: string, page = 1, limit = 20): Promise<PlantResponse<Plant[]>> => {
+export const flexiblePlantSearch = async (query: string, page = 1, limit = 20): Promise<PlantResponse<Plant>> => {
   try {
     const response = await API.get(`/plants/search`, { params: { query, page, limit } });
 
