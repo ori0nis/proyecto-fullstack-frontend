@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Plant } from "../../models/plant";
-import { getAllPlants } from "../../services";
-import { AddNewNurseryPlantModal, AdminEditPlant } from "../modals";
+import { deletePlant, getAllPlants } from "../../services";
+import { AddNewNurseryPlantModal, AdminEditPlant, ConfirmDeleteModal } from "../modals";
 import { NewNurseryPlantForm } from "./user/user-nursery/NewNurseryPlantForm";
 import { throttle } from "lodash";
 import { useAuth } from "../../context";
@@ -18,8 +18,8 @@ export const PlantNursery = () => {
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   /* Admin states */
-  const [showAdminEditModal, setShowAdminEditModal] = useState<boolean>(false);
-  const [showAdminDeleteModal, setShowAdminDeleteModal] = useState<boolean>(false);
+  const [editingPlant, setEditingPlant] = useState<string | null>("");
+  const [deletingPlant, setDeletingPlant] = useState<string | null>("");
 
   const fetchPlants = async (page = 1) => {
     setLoading(true);
@@ -56,6 +56,21 @@ export const PlantNursery = () => {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleConfirmDelete = async (plantId: string) => {
+    try {
+      const success = await deletePlant(plantId);
+
+      if (success) {
+        setSuccess(true);
+        setDeletingPlant(null);
+      } else {
+        alert("Couldn't delete plant");
+      }
+    } catch (error) {
+      console.error("Couldn't delete plant: ", error);
     }
   };
 
@@ -107,23 +122,47 @@ export const PlantNursery = () => {
           <p>{plant.common_name}</p>
           <p>{plant.types}</p>
 
-          {/* Edition buttons for admin */}
+          {/* Edition for admin */}
           {user?.role === "admin" && (
             <div>
-              <button onClick={() => setShowAdminEditModal((prev) => !prev)}>Edit plant</button>
-              <button onClick={() => setShowAdminDeleteModal}>Delete plant</button>
-              {showAdminEditModal && (
-                <AdminEditPlant isOpen={showAdminEditModal} onClose={() => setShowAdminEditModal((prev) => !prev)}>
-                  <AdminEditPlantForm /> {/* // TODO */}
+              <button
+                onClick={() => {
+                  setEditingPlant(plant._id);
+                }}
+              >
+                Edit plant
+              </button>
+              {editingPlant === plant._id && (
+                <AdminEditPlant isOpen={true} onClose={() => setEditingPlant(null)}>
+                  <AdminEditPlantForm plantId={plant._id} onClose={() => setEditingPlant(null)} />
+                  {/* // TODO */}
                 </AdminEditPlant>
               )}
-              {/* // TODO: Add delete with confirm modal maybe */}
+
+              {/* Deletion for admin */}
+              <button
+                onClick={() => {
+                  setDeletingPlant(plant._id);
+                }}
+              >
+                Delete plant
+              </button>
+              {deletingPlant === plant._id && (
+                <ConfirmDeleteModal
+                  isOpen={true}
+                  onAccept={() => handleConfirmDelete(plant._id)}
+                  onCancel={() => setDeletingPlant(null)}
+                  onClose={() => setDeletingPlant(null)}
+                />
+              )}
             </div>
           )}
         </div>
       ))}
+
       {/* Loader */} {/* // TODO: Replace with spinner  */}
       {loading && plants.length > 0 && <p>Loading more plants...</p>}
+      
       {error && <p>{error}</p>}
       {success && <p>Successfully loaded plants!</p>}
       {!hasMore && <p>You're all caught up!</p>}

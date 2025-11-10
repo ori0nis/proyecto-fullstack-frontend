@@ -6,3 +6,4 @@ export * from "./edit-user-plant.schema";
 export * from "./edit-profile.schema";
 export * from "./change-password-schema";
 export * from "./delete-account-schema";
+export * from "./admin-edit-nursery-plant.schema";

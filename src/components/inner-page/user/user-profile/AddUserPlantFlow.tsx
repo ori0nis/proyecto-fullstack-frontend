@@ -17,7 +17,13 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
   const handleSearch = async () => {
     try {
       const response = await flexiblePlantSearch(query);
-      setResults(response.data.plants);
+      const plantData = response.data;
+
+      if (plantData && plantData.plants && Array.isArray(plantData)) {
+        setResults(plantData);
+      } else {
+        setResults([]);
+      }
     } catch (error) {
       console.error("Error searching plants: ", error);
     }
@@ -53,7 +59,7 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
   }
 
   if (step === "form") {
-    return <AddUserPlantForm plantId={plantId} onClose={onClose} onAdded={onAdded}/>;
+    return <AddUserPlantForm plantId={plantId} onClose={onClose} onAdded={onAdded} />;
   }
 
   return null;

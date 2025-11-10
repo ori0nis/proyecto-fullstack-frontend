@@ -24,13 +24,15 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
     },
   });
 
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string | null>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
   const onSubmit = async (data: EditUserPlantFormValues) => {
     setLoading(true);
-    
+    setError(null);
+    setSuccess(false);
+
     try {
       const success = await editUserPlant(plantId, data);
 
@@ -59,7 +61,7 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
   return (
     <>
       <div>
-        <h3>Edit plant</h3>
+        <h3>Edit your plant</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputEditUserPlant
             label="Your plant's name: "

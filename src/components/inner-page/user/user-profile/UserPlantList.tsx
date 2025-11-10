@@ -33,25 +33,30 @@ export const UserPlantList = ({ plants, setPlants }: Props) => {
   return (
     <>
       <div>
-        {/* // TODO: Add grid and list view */}
+        {/* //TODO: Add grid and list view */}
 
+        {/* Plants */}
         {plants.map((plant) => (
           <div key={plant._id}>
             <img src={plant.imgPublicUrl} className="w-25" alt={plant.nameByUser} />
             <p>{plant.nameByUser}</p>
+
+            {/* Plant edit */}
             <button onClick={() => setEditingPlant(plant._id)}>Edit</button>
             {editingPlant === plant._id && (
               <EditUserPlantModal isOpen={true} onClose={() => setEditingPlant(null)}>
                 <EditUserPlantForm plantId={plant._id} onClose={() => setEditingPlant(null)} />
               </EditUserPlantModal>
             )}
+
+            {/* Plant delete */}
             <button onClick={() => setDeletingPlant(plant._id)}>Delete</button>
             {deletingPlant === plant._id && (
               <ConfirmDeleteModal
                 isOpen={true}
-                onClose={() => setDeletingPlant(null)}
                 onAccept={() => handleConfirmDelete(plant._id)}
                 onCancel={() => setDeletingPlant(null)}
+                onClose={() => setDeletingPlant(null)}
               />
             )}
           </div>
