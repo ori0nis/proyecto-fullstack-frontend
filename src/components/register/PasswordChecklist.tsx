@@ -8,27 +8,27 @@ export const PasswordChecklist = ({ password }: Props) => {
   const rules = [
     {
       constraint: password.length > 8,
-      message: "Password must be at least 8 characters long"
+      message: "At least 8 characters long"
     },
     {
       constraint: /^(?!\s)(?!.*\s$).*$/.test(password),
-      message: "Password can't contain spaces at the start or end",
+      message: "No spaces at the start or end",
     },
     {
       constraint: /[a-z]/.test(password),
-      message: "Password must contain at least one lowercase letter",
+      message: "At least one lowercase letter",
     },
     {
       constraint: /[A-Z]/.test(password),
-      message: "Password must contain at least one uppercase letter",
+      message: "At least one uppercase letter",
     },
     {
       constraint: /\d/.test(password),
-      message: "Password must contain at least one number",
+      message: "At least one number",
     },
     {
       constraint: /[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(password),
-      message: "Password must contain at least one special character",
+      message: "At least one special character",
     },
     {
       constraint: !lowSecurityPassword.includes(password),
@@ -37,9 +37,9 @@ export const PasswordChecklist = ({ password }: Props) => {
   ];
 
   return (
-    <div>
+    <div className="z-9999 w-full mx-auto bg-[#FFF8E7] opacity-70 text-gray-600 text-xs text-left rounded shadow p-2 max-w-[200px]">
       {rules.map((rule, i) => (
-        <p key={i} className={rule.constraint ? "" : ""}>
+        <p key={i} className={rule.constraint ? "font-[quicksand] font-extrabold text-[#3d8861]" : "font-[quicksand] font-extrabold text-[#c53030]"}>
           {rule.constraint ? "✓" : "✗"} {rule.message}
         </p>
       ))}

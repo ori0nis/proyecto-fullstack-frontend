@@ -121,11 +121,14 @@ export const editPlant = async (id: string, plant: Partial<NewPlant>): Promise<P
 };
 
 // DELETE PLANT (UNIVERSAL REPOSITORY)
-export const deletePlant = async (id: string): Promise<Plant> => {
+export const deletePlant = async (id: string): Promise<{ status: number; data: Plant }> => {
   try {
     const response = await API.delete(`/plants/plant/${id}`);
 
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+    };
   } catch (error) {
     throw axiosErrorHandler(error);
   }

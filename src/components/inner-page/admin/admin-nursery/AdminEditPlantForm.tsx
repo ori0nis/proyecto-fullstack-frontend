@@ -8,9 +8,10 @@ import { InputAdminEditNurseryPlant } from "./InputAdminEditNurseryPlant";
 interface Props {
   plantId: string;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-export const AdminEditPlantForm = ({ plantId, onClose }: Props) => {
+export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
   const {
     control,
     handleSubmit,
@@ -27,23 +28,20 @@ export const AdminEditPlantForm = ({ plantId, onClose }: Props) => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
-  const [success, setSuccess] = useState<boolean>(false);
 
   const onSubmit = async (data: AdminEditNurseryPlantFormValues) => {
     setLoading(true);
     setError(null);
-    setSuccess(false);
+
 
     try {
       const success = await editPlant(plantId, data);
 
       if (success) {
-        setSuccess(true);
         alert("Successfully edited plant!");
         reset();
-      } else {
-        setSuccess(false);
-      }
+        onSuccess();
+      } 
     } catch (error) {
       console.error(error);
       alert("There was an error editing the plant");
@@ -89,7 +87,7 @@ export const AdminEditPlantForm = ({ plantId, onClose }: Props) => {
             control={control}
           />
           <InputAdminEditNurseryPlant
-            label="Type "
+            label="Type: "
             name="type"
             type="text"
             placeholder="New type..."
@@ -104,7 +102,6 @@ export const AdminEditPlantForm = ({ plantId, onClose }: Props) => {
           </button>
         </form>
         {error && <p className="">{error}</p>}
-        {success && <p>Plant successfully edited!</p>}
       </div>
     </>
   );

@@ -6,9 +6,13 @@ const lowSecurityPassword: string[] = ["123", "abc", "qwerty", "password", "admi
 
 export const RegisterSchema = z
   .object({
-    username: z.string().min(2, "Username must be at least 2 characters long").max(40, "Username is too long"),
+    username: z.string().min(2, "At least 2 characters long").max(40, "Username is too long"),
     email: z.email("Invalid email"),
-    plant_care_skill_level: z.enum(["beginner", "intermediate", "advanced", "Demeter"]),
+    plant_care_skill_level: z
+      .string()
+      .refine((val) => ["beginner", "intermediate", "advanced", "Demeter"].includes(val), {
+        message: "beginner, intermediate, advanced",
+      }),
     password: z
       .string()
       .min(8, "")

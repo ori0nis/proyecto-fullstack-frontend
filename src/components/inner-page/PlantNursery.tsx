@@ -61,11 +61,12 @@ export const PlantNursery = () => {
 
   const handleConfirmDelete = async (plantId: string) => {
     try {
-      const success = await deletePlant(plantId);
+      const response = await deletePlant(plantId);
 
-      if (success) {
-        setSuccess(true);
+      if (response.status === 200) {
+        alert("Plant deleted successfully");
         setDeletingPlant(null);
+        await fetchPlants(1);
       } else {
         alert("Couldn't delete plant");
       }
@@ -107,6 +108,7 @@ export const PlantNursery = () => {
         Welcome to the MyPlants Nursery! This collaborative repository contains all the plants known to our users. Want
         to add a new one?
       </p>
+
       {/* Add new plant */}
       <button onClick={() => setShowNewPlantModal((prev) => !prev)}>Request to add a new plant</button>
       {showNewPlantModal && (
@@ -114,6 +116,7 @@ export const PlantNursery = () => {
           <NewNurseryPlantForm onClose={() => setShowNewPlantModal((prev) => !prev)} />
         </AddNewNurseryPlantModal>
       )}
+
       {/* Plants */}
       {plants.map((plant) => (
         <div key={plant._id}>
@@ -134,8 +137,14 @@ export const PlantNursery = () => {
               </button>
               {editingPlant === plant._id && (
                 <AdminEditPlant isOpen={true} onClose={() => setEditingPlant(null)}>
-                  <AdminEditPlantForm plantId={plant._id} onClose={() => setEditingPlant(null)} />
-                  {/* // TODO */}
+                  <AdminEditPlantForm
+                    plantId={plant._id}
+                    onClose={() => setEditingPlant(null)}
+                    onSuccess={() => {
+                      fetchPlants(1);
+                      setEditingPlant(null);
+                    }}
+                  />
                 </AdminEditPlant>
               )}
 
@@ -150,7 +159,10 @@ export const PlantNursery = () => {
               {deletingPlant === plant._id && (
                 <ConfirmDeleteModal
                   isOpen={true}
-                  onAccept={() => handleConfirmDelete(plant._id)}
+                  onAccept={() => {
+                    handleConfirmDelete(plant._id);
+                    fetchPlants(1);
+                  }}
                   onCancel={() => setDeletingPlant(null)}
                   onClose={() => setDeletingPlant(null)}
                 />

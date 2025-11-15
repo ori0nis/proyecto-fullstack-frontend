@@ -10,21 +10,31 @@ interface Props {
   placeholder?: string;
   onFocus?: () => void;
   onBlur?: () => void;
+  containerClassname?: string;
+  labelClassname?: string;
+  inputClassname?: string;
+  errorClassname?: string;
 }
 
 export const InputRegister = ({
   label,
   name,
   control,
-  type,
+  type = "text",
   error,
   placeholder,
   onFocus = () => {},
   onBlur = () => {},
+  containerClassname = "",
+  inputClassname = "",
+  labelClassname = "",
+  errorClassname = "",
 }: Props) => {
   return (
-    <div className="">
-      <label htmlFor={name}>{label}</label>
+    <div className={containerClassname}>
+      <label htmlFor={name} className={labelClassname}>
+        {label}
+      </label>
       <Controller
         name={name}
         control={control}
@@ -42,9 +52,9 @@ export const InputRegister = ({
                 field.onBlur();
                 onBlur();
               }}
-              className={`    ${error ? "" : ""}`}
+              className={inputClassname}
             />
-            {error && <p className="">{error.message}</p>}
+            {error && <p className={errorClassname}>{error.message}</p>}
           </>
         )}
       />

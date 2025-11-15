@@ -10,6 +10,10 @@ interface Props {
   error?: FieldError;
   onBlur?: () => void;
   onFocus?: () => void;
+  containerClassname?: string;
+  inputClassname?: string;
+  labelClassname?: string;
+  errorClassname?: string;
 }
 
 export const InputLogin = ({
@@ -21,10 +25,16 @@ export const InputLogin = ({
   error,
   onBlur = () => {},
   onFocus = () => {},
+  containerClassname = "",
+  inputClassname = "",
+  labelClassname = "",
+  errorClassname = "",
 }: Props) => {
   return (
-    <div className="">
-      <label htmlFor={name}>{label}</label>
+    <div className={containerClassname}>
+      <label htmlFor={name} className={labelClassname}>
+        {label}
+      </label>
       <Controller
         name={name}
         control={control}
@@ -42,9 +52,9 @@ export const InputLogin = ({
                 field.onBlur();
                 onBlur();
               }}
-              className={`     ${error ? "" : ""}`}
+              className={inputClassname}
             />
-            {error && <p className="">{error.message}</p>}
+            {error && <p className={errorClassname}>{error.message}</p>}
           </>
         )}
       />
