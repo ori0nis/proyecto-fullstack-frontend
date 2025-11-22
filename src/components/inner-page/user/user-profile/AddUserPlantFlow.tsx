@@ -13,19 +13,28 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
   const [results, setResults] = useState<Plant[]>([]);
   const [plantId, setPlantId] = useState<string>("");
   const [step, setStep] = useState<"form" | "search">("search");
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async () => {
+    setError(null);
+
     try {
       const response = await flexiblePlantSearch(query);
       const plantData = response.data;
 
-      if (plantData && plantData.plants && Array.isArray(plantData)) {
-        setResults(plantData);
+      if (plantData && Array.isArray(plantData.plants)) {
+        setResults(plantData.plants);
       } else {
         setResults([]);
       }
     } catch (error) {
       console.error("Error searching plants: ", error);
+
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Couldn't find plant");
+      }
     }
   };
 
@@ -37,29 +46,85 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
   if (step === "search") {
     return (
       <>
-        <div>
-          <h3>Find your plant in the MyPlants Nursery</h3>
-          <input type="text" value={query} placeholder="Search plant..." onChange={(e) => setQuery(e.target.value)} />
-          <button onClick={handleSearch}>Search</button>
+        <div className="flex flex-col mt-2 gap-1">
+          <h3 className="underline text-center font-semibold mt-2">Find your plant in the MyPlants Nursery</h3>
+          {/* Search */}
+          <div className="flex justify-center mt-2 gap-1">
+            <input
+              type="text"
+              value={query}
+              placeholder="Search plant..."
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
+              className="w-fit border border-gray-800 rounded-md p-1 placeholder: text-sm placeholder: text-gray-900"
+            />
+            <button onClick={handleSearch} className="cursor-pointer font-medium border border-gray-900 rounded-md p-1">
+              Search
+            </button>
+          </div>
 
-          <div>
+          {/* Error */}
+          {error && (
+            <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
+              {error}
+            </p>
+          )}
+
+          {/* Results */}
+          <div className="flex flex-col gap-2 overflow-y-auto mt-3 pb-2 max-h-96">
             {results.map((plant) => (
-              <div key={plant._id}>
-                <img src={plant.imgPublicUrl} alt={plant.scientific_name} />
-                <p>{plant.scientific_name}</p>
-                <button onClick={() => handleSelectPlant(plant._id)}>Select</button>
+              <div
+                key={plant._id}
+                className="w-full flex flex-row items-center gap-4 border border-gray-700 rounded-lg shadow-sm shadow-neutral-700"
+              >
+                {/* Img */}
+                <img
+                  src={plant.imgPublicUrl}
+                  alt={plant.scientific_name}
+                  className="w-28 h-28 object-cover rounded-md shrink-0"
+                />
+                {/* Info + select */}
+                <div className="flex flex-col justify-center w-full text-center">
+                  <p className="text-sm font-semibold leading-tight line-clamp-2">{plant.scientific_name}</p>
+                  <button
+                    onClick={() => handleSelectPlant(plant._id)}
+                    className="cursor-pointer mt-2 self-center font-medium border border-gray-900 rounded-md px-3 py-1 "
+                  >
+                    Select
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-
-          <button onClick={onClose}>Cancel</button>
+          <button
+            onClick={onClose}
+            className="cursor-pointer self-center font-medium border border-gray-900 rounded-md p-1 bg-[#c53030] opacity-90"
+          >
+            Cancel
+          </button>
         </div>
       </>
     );
   }
 
   if (step === "form") {
-    return <AddUserPlantForm plantId={plantId} onClose={onClose} onAdded={onAdded} />;
+    return (
+      <>
+        <button
+          onClick={() => setStep("search")}
+          className="cursor-pointer font-medium border border-gray-900 rounded-md p-1 mb-2"
+        >
+          Back
+        </button>
+        ;
+        <AddUserPlantForm plantId={plantId} onClose={onClose} onAdded={onAdded} />
+      </>
+    );
   }
 
   return null;

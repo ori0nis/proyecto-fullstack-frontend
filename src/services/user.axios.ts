@@ -1,7 +1,7 @@
 import { API } from "../config";
 import type { LoginUser, NewUser, PublicUser, UserProfile, UserResponse } from "../models/user";
 import { axiosErrorHandler } from "../utils";
-import type { NewUserPlant, UserPlant, UserPlantResponse } from "../models/plant";
+import type { NewUserPlant, PlantResponse, UserPlant, UserPlantResponse } from "../models/plant";
 
 const VITE_API_AUTH_ENDPOINT = import.meta.env.VITE_API_AUTH_ENDPOINT;
 const VITE_API_REFRESH_TOKEN_ENDPOINT = import.meta.env.VITE_API_REFRESH_TOKEN_ENDPOINT;
@@ -133,6 +133,7 @@ export const editUser = async (id: string, updates: Partial<NewUser>): Promise<U
     if (updates.plant_care_skill_level) formData.append("plant_care_skill_level", updates.plant_care_skill_level);
     if (updates.profilePic) formData.append("imgPath", updates.profilePic); // imgPath mirrors the backend name
     if (updates.password) formData.append("currentPassword", updates.password); //currentPassword mirrors the backend name
+    if (updates.profile_bio) formData.append("profile_bio", updates.profile_bio);
 
     const response = await API.put(`/users/user/${id}`, formData, {
       headers: {
@@ -179,7 +180,7 @@ export const getUserPlants = async (): Promise<UserPlantResponse<UserPlant>> => 
 export const addPlantToUserProfile = async (
   plantId: string,
   newUserPlant: NewUserPlant
-): Promise<UserResponse<PublicUser>> => {
+): Promise<PlantResponse<UserPlant>> => {
   try {
     const formData = new FormData();
 
@@ -203,7 +204,7 @@ export const addPlantToUserProfile = async (
 export const editUserPlant = async (
   plantId: string,
   updates: Partial<NewUserPlant>
-): Promise<UserResponse<PublicUser>> => {
+): Promise<PlantResponse<UserPlant>> => {
   try {
     const formData = new FormData();
 

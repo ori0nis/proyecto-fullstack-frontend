@@ -25,12 +25,14 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
     },
   });
 
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
   const onSubmit = async (data: AddUserPlantFormValues) => {
     setLoading(true);
+    setError(null);
+
     try {
       const success = await addPlantToUserProfile(plantId, data);
 
@@ -68,7 +70,7 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
   return (
     <>
       <div>
-        <h3>Add plant to your plot</h3>
+        <h3 className="underline text-center font-semibold mt-2">Add plant to your plot</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputAddUserPlant
             label="Your plant's name: "
@@ -77,6 +79,10 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
             placeholder="New name..."
             error={errors.nameByUser}
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputAddUserPlant
             label="Plant img: "
@@ -84,13 +90,30 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
             type="file"
             error={errors.plantImg}
             control={control}
+            as="file"
+            containerClassname="mx-auto text-center"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
-          <button type="submit" disabled={loading}>
-            Submit
-          </button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+
+          {/* Buttons */}
+          <div className="flex gap-2 justify-center mt-3">
+            <button
+              type="submit"
+              disabled={loading}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
         {error && <p className="">{error}</p>}
         {success && <p className="">Plant successfully added!</p>}

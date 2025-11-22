@@ -64,8 +64,10 @@ export const DeleteAccountForm = () => {
 
   return (
     <>
-      <div>
-        <h2>Are you sure you want to delete your account? This action can't be undone</h2>
+      <div className="text-center mx-auto xs:max-w-[70%]">
+        <h2 className="text-[#c53030] font-medium mb-2">
+          Are you sure you want to delete your account? This action can't be undone
+        </h2>
         <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputDeleteAccount
             label="Password: "
@@ -73,6 +75,10 @@ export const DeleteAccountForm = () => {
             control={control}
             type="password"
             error={errors.password}
+            containerClassname="mx-auto text-center p-2 mb-3"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputDeleteAccount
             label="Confirm password: "
@@ -80,12 +86,22 @@ export const DeleteAccountForm = () => {
             control={control}
             type="password"
             error={errors.confirm_password}
+            containerClassname="mx-auto text-center p-2 mb-3"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
-          <button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+          >
             Submit
           </button>
-          {error && <p className="">{error}</p>}
-          {success && <p className="">Account deleted successfully</p>}
+          {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
+          {success && (
+            <p className="text-[#3d8861] text-sm font-medium font-[quicksand] mt-2">Account deleted successfully</p>
+          )}
         </form>
       </div>
     </>

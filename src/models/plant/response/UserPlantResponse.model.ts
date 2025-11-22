@@ -6,7 +6,7 @@ export interface UserPlantResponse<T> {
   message: string;
   status: number;
   data: {
-    userPlants: T[];
+    plants: T[];
     meta: PaginationMeta | null;
   } | null;
 }

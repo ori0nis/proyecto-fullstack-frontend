@@ -69,7 +69,7 @@ export const ChangePasswordForm = () => {
 
   return (
     <>
-      <div>
+      <div className="mx-auto text-center">
         <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputChangePassword
             label="Old password: "
@@ -77,6 +77,10 @@ export const ChangePasswordForm = () => {
             control={control}
             type="password"
             error={errors.old_password}
+            containerClassname="mx-auto text-center p-2 mb-3"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputChangePassword
             label="Confirm password: "
@@ -84,6 +88,10 @@ export const ChangePasswordForm = () => {
             control={control}
             type="password"
             error={errors.confirm_password}
+            containerClassname="mx-auto text-center p-2 mb-3"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputChangePassword
             label="New password: "
@@ -91,13 +99,23 @@ export const ChangePasswordForm = () => {
             control={control}
             type="password"
             error={errors.new_password}
+            containerClassname="mx-auto text-center p-2 mb-3"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           {new_password && <PasswordChecklist password={new_password} />}
-          <button type="submit" disabled={!(new_password && old_password && confirm_password) || loading}>
+          <button
+            type="submit"
+            disabled={!(new_password && old_password && confirm_password) || loading}
+            className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+          >
             Submit
           </button>
           {error && <p className="text-red-400">{error}</p>}
-          {success && <p className="">Password updated successfully!</p>}
+          {success && (
+            <p className="text-[#3d8861] text-sm font-medium font-[quicksand] mt-2">Password updated successfully!</p>
+          )}
         </form>
       </div>
     </>

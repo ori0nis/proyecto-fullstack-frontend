@@ -1,18 +1,18 @@
 import { Outlet } from "react-router-dom";
 import { UserSidebar } from "../../components/inner-page/user";
-import { Footer } from "../../components/inner-page";
 
 export const UserLayout = () => {
   return (
-    <>
+    <div className="flex min-h-screen bg-amber-100">
       {/* Sidebar */}
       <UserSidebar />
 
-      {/* Outlet */}
-      <Outlet />
-
-      {/* Footer */}
-      <Footer />
-    </>
+      {/* Content */}
+      <div className="flex-1 flex flex-col pt-8 pl-8 pr-8">
+        <div className="flex-1">
+          <Outlet />
+        </div>
+      </div>
+    </div>
   );
 };

@@ -10,6 +10,10 @@ interface Props {
   error?: FieldError;
   onFocus?: () => void;
   onBlur?: () => void;
+  containerClassname?: string;
+  labelClassname?: string;
+  inputClassname?: string;
+  errorClassname?: string;
 }
 
 export const InputDeleteAccount = ({
@@ -21,10 +25,16 @@ export const InputDeleteAccount = ({
   error,
   onFocus = () => {},
   onBlur = () => {},
+  containerClassname = "",
+  inputClassname = "",
+  labelClassname = "",
+  errorClassname = "",
 }: Props) => {
   return (
-    <div>
-      <label htmlFor={name}>{label}</label>
+    <div className={containerClassname}>
+      <label htmlFor={name} className={labelClassname}>
+        {label}
+      </label>
       <Controller
         name={name}
         control={control}
@@ -42,9 +52,9 @@ export const InputDeleteAccount = ({
                 field.onBlur();
                 onBlur();
               }}
-              className={`      ${error ? "" : ""}`}
+              className={inputClassname}
             />
-            {error && <p className="">{error.message}</p>}
+            {error && <p className={errorClassname}>{error.message}</p>}
           </>
         )}
       />

@@ -8,9 +8,10 @@ import { InputEditUserPlant } from "./InputEditUserPlant";
 interface Props {
   plantId: string;
   onClose: () => void;
+  onEdited: () => void;
 }
 
-export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
+export const EditUserPlantForm = ({ plantId, onClose, onEdited }: Props) => {
   const {
     handleSubmit,
     control,
@@ -41,6 +42,7 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
         reset();
         alert("Plant successfully edited!");
         onClose();
+        onEdited();
       } else {
         setSuccess(false);
       }
@@ -61,7 +63,7 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
   return (
     <>
       <div>
-        <h3>Edit your plant</h3>
+        <h3 className="underline text-center font-semibold mt-2">Edit your plant</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputEditUserPlant
             label="Your plant's name: "
@@ -70,6 +72,10 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
             placeholder="New name..."
             error={errors.nameByUser}
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputEditUserPlant
             label="Plant img: "
@@ -77,13 +83,30 @@ export const EditUserPlantForm = ({ plantId, onClose }: Props) => {
             type="file"
             error={errors.plantImg}
             control={control}
+            as="file"
+            containerClassname="mx-auto text-center"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
-          <button type="submit" disabled={loading}>
-            Submit
-          </button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+
+          {/* Buttons */}
+          <div className="flex gap-2 justify-center mt-3">
+            <button
+              type="submit"
+              disabled={loading}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
         {error && <p className="">{error}</p>}
         {success && <p className="">Plant successfully edited!</p>}

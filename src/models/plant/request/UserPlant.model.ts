@@ -5,6 +5,7 @@ export interface UserPlant {
   userId: string;
   plantId: string;
   nameByUser: string;
+  scientific_name: string;
   imgPath: string;
   imgPublicUrl: string;
 }

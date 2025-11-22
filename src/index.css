@@ -9,3 +9,7 @@
   /* Breakpoint for small screens */
   --breakpoint-xs: 450px;
 }
+
+body {
+  @apply font-quicksand;
+}

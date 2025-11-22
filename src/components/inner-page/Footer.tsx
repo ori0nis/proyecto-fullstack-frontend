@@ -1,3 +1,7 @@
 export const Footer = () => {
-  return <p>Made by ori0nis</p>;
+  return (
+    <p className="font-medium text-xs">
+      Made by <a href="https://github.com/ori0nis">ori0nis</a>
+    </p>
+  );
 };

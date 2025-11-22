@@ -3,7 +3,8 @@
 export interface NewUser {
   username: string;
   email: string;
+  password: string;
   plant_care_skill_level: string;
   profilePic?: File;
-  password: string;
+  profile_bio?: string;
 }
