@@ -86,7 +86,6 @@ export const ManageUsersPage = () => {
       }
 
       if (userData) {
-        console.log(userData.users);
         setUsers(userData.users);
         setSuccess(true);
       } else {
@@ -142,16 +141,12 @@ export const ManageUsersPage = () => {
           <input value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
           <button type="submit">Submit</button>
         </form>
-
         {/* Trigger of search all */}
         <button onClick={handleSearchAll}>Click here for a list of all users</button>
-
         {/* UserList with prop */}
         <UserList users={users} />
-
         {/* Loader */} {/* // TODO: Replace with spinner  */}
         {loading && users.length > 0 && <p>Loading more users...</p>}
-        
         {error && <p>{error}</p>}
         {success && <p>Successfully loaded users!</p>}
         {!hasMore && isAllUsersMode && <p>You're all caught up</p>}

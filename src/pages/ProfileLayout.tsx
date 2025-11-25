@@ -25,8 +25,6 @@ export const ProfileLayout = () => {
 
       if (response.data && response.data.plants) {
         setPlants(response.data.plants);
-        console.log(response.data.plants);
-        console.log(plants);
       } else {
         setPlants([]);
       }
@@ -49,12 +47,13 @@ export const ProfileLayout = () => {
       {/* Profile pic, bio and edit button */}
       <div className="flex gap-4 w-fit items-start">
         <img className="w-25 rounded-xl" src={user!.imgPublicUrl} alt={user!.username} />
-        <div className="flex flex-col gap-1 max-w-60">
-          <p className="wrap-break-word">{user?.profile_bio}</p>
-          <Link to="edit-profile" className="flex items-center gap-1 font-medium border border-gray-800 text-gray-900 rounded-sm p-1 mt-2 w-fit text-center">
+        <div className="flex flex-col max-w-40">
+          <p className="font-bold text-lg">@{user?.username}</p>
+          <p className="wrap-break-word text-sm">{user?.profile_bio}</p>
+          <Link to="edit-profile" className="flex items-center gap-1 font-medium border border-gray-800 text-gray-900 rounded-lg pr-2 pl-3 pt-0.5 pb-0.5 mt-2 w-fit text-center">
             Edit profile
             <svg width="21" height="21">
-              <use href="/public/assets/spritesheet.svg#settings-icon" />
+              <use href="/public/assets/spritesheet.svg#settings-icon" className="cursor-pointer"/>
             </svg>
           </Link>
         </div>

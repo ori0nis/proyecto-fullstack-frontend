@@ -6,5 +6,5 @@ export interface Plant {
   common_name: string;
   imgPath: string;
   imgPublicUrl: string;
-  types: "desert" | "tropical" | "temperate" | "alpine" | "aquatic";
+  type: "desert" | "tropical" | "temperate" | "alpine" | "aquatic";
 }

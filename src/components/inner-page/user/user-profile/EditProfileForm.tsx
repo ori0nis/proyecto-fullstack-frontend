@@ -151,7 +151,7 @@ export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
             inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
-          <span>{wordCount}/60</span>
+          <span className="font-medium">{wordCount}/60</span>
 
           {user?.role === "admin" && <h3>Input your password to complete user edit: </h3>}
           {user?.role === "user" && <h3 className="mt-3 mb-3">Confirm your password to complete your request:</h3>}

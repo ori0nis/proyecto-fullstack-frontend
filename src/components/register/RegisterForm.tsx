@@ -82,10 +82,7 @@ export const RegisterForm = () => {
             error={errors.username}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
-            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 
-                  text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light
-                  focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c]
-                  transition-colors duration-200"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
           />
           <InputRegister
@@ -97,10 +94,7 @@ export const RegisterForm = () => {
             error={errors.email}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
-            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 
-                  text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light
-                  focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c]
-                  transition-colors duration-200"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
           />
           <div className="flex flex-col w-full gap-1 h-20.5">
@@ -115,10 +109,7 @@ export const RegisterForm = () => {
               onBlur={() => setShowPasswordChecklist(false)}
               containerClassname="mx-auto text-center p-2 min-w-[250px]"
               labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
-              inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 
-                  text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light
-                  focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c]
-                  transition-colors duration-200"
+              inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
               errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
             />
             {password && showPasswordChecklist && <PasswordChecklist password={password} />}
@@ -132,10 +123,7 @@ export const RegisterForm = () => {
             error={errors.confirm_password}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
-            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 
-                  text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light
-                  focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c]
-                  transition-colors duration-200"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
           />
           <InputRegister
@@ -147,10 +135,7 @@ export const RegisterForm = () => {
             error={errors.plant_care_skill_level}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
-            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 
-                  text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light
-                  focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c]
-                  transition-colors duration-200"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
           />
           <button

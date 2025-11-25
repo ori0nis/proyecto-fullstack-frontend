@@ -3,7 +3,7 @@ import { UserSidebar } from "../../components/inner-page/user";
 
 export const UserLayout = () => {
   return (
-    <div className="flex min-h-screen bg-amber-100">
+    <div className="bg-amber-100 grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] min-h-screen">
       {/* Sidebar */}
       <UserSidebar />
 

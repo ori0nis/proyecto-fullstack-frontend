@@ -20,9 +20,9 @@ export const FindFriendsPage = () => {
     try {
       const userFound = await getUserByUsername(username);
 
-      if (userFound) {
+      if (userFound.data && userFound.data.users) {
         setSuccess(true);
-        setFriend(userFound);
+        setFriend(userFound.data.users[0]);
       } else {
         setSuccess(false);
       }
@@ -45,8 +45,10 @@ export const FindFriendsPage = () => {
   return (
     <>
       <div>
-        <form action="get" onSubmit={handleSubmit}>
-          <label htmlFor="username">Find friends: </label>
+        <form action="get" onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+          <label htmlFor="username" className="font-[quicksand] text-md mb-1 block">
+            Find friends:
+          </label>
           <input
             id="username"
             name="username"
@@ -54,18 +56,27 @@ export const FindFriendsPage = () => {
             onChange={(e) => setUsername(e.target.value)}
             type="text"
             placeholder="Search for a username..."
+            className="font-[quicksand] text-sm max-w-[200px] px-2 py-1 rounded-lg border border-gray-400 text-gray-800 placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
           />
-          <button type="submit">Find friends</button>
+          <button type="submit" className="self-start border p-1 rounded-lg cursor-pointer text-sm">
+            Submit
+          </button>
           {success && friend && (
-            <div className="">
-              <h2>{friend.username}</h2>
-              <button onClick={() => {
-                navigate(`/myplants/home/profile/${friend.username}`)
-              } }>View profile</button>
+            <div className="flex items-center gap-3 mt-4">
+              <img src={friend.imgPublicUrl} alt={friend.username} className="rounded-full w-15" />
+              <p className="text-sm font-bold">@{friend.username}</p>
+              <button
+                onClick={() => {
+                  navigate(`/myplants/home/profile/${friend.username}`);
+                }}
+                className="text-sm border p-1 rounded-lg cursor-pointer"
+              >
+                View profile
+              </button>
             </div>
           )}
         </form>
-        {error && <p className="">{error}</p>}
+        {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
       </div>
     </>
   );

@@ -117,11 +117,13 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
       <>
         <button
           onClick={() => setStep("search")}
-          className="cursor-pointer font-medium border border-gray-900 rounded-md p-1 mb-2"
+          className="cursor-pointer font-medium mb-4 flex items-center gap-1"
         >
+          <svg width="21" height="21">
+            <use href="/public/assets/spritesheet.svg#logout-icon" />
+          </svg>
           Back
         </button>
-        ;
         <AddUserPlantForm plantId={plantId} onClose={onClose} onAdded={onAdded} />
       </>
     );

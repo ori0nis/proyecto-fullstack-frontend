@@ -51,7 +51,7 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
               {/* Plant edit */}
               <button
                 onClick={() => setEditingPlant(plant._id)}
-                className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded hover:bg-green-400 transition duration-300"
+                className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded-lg hover:bg-green-400 transition duration-300"
               >
                 Edit
               </button>
@@ -64,7 +64,7 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
               {/* Plant delete */}
               <button
                 onClick={() => setDeletingPlant(plant._id)}
-                className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded hover:bg-red-400 transition duration-300"
+                className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded-lg hover:bg-red-400 transition duration-300"
               >
                 Delete
               </button>
