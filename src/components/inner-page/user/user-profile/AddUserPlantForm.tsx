@@ -115,8 +115,10 @@ export const AddUserPlantForm = ({ plantId, onClose, onAdded }: Props) => {
             </button>
           </div>
         </form>
-        {error && <p className="">{error}</p>}
-        {success && <p className="">Plant successfully added!</p>}
+        {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2 text-center">{error}</p>}
+        {success && (
+          <p className="text-[#3d8861] text-sm font-medium font-[quicksand] mt-2">Plant successfully added!</p>
+        )}
       </div>
     </>
   );

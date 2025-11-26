@@ -46,7 +46,7 @@ export const FindFriendsPage = () => {
     <>
       <div>
         <form action="get" onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
-          <label htmlFor="username" className="font-[quicksand] text-md mb-1 block">
+          <label htmlFor="username" className="font-[quicksand] text-md mb-1 block text-xl font-medium">
             Find friends:
           </label>
           <input

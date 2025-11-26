@@ -84,9 +84,9 @@ export const postNewPlant = async (plant: NewPlant): Promise<Plant> => {
     formData.append("scientific_name", plant.scientific_name);
     formData.append("common_name", plant.common_name);
     formData.append("type", plant.type);
-    formData.append("plantImg", plant.plantImg);
+    formData.append("imgPath", plant.plantImg); // imgPath mirrors the backend name
 
-    const response = await API.post("/plants/new-plant", plant, {
+    const response = await API.post("/plants/new-plant", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

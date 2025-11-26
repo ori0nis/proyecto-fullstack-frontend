@@ -12,16 +12,18 @@ import { NewNurseryPlantForm } from "./user/user-nursery/NewNurseryPlantForm";
 import { throttle } from "lodash";
 import { useAuth } from "../../context";
 import { AdminEditPlantForm } from "./admin";
+import { PlantCardSkeleton } from ".";
 
 export const PlantNursery = () => {
   const { user } = useAuth();
   const [plants, setPlants] = useState<Plant[]>([]);
   const [showNewPlantModal, setShowNewPlantModal] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   /* Pagination states */
+  const [initialLoading, setInitialLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   /* Debounce and search states */
   const [debouncedValue, setDebouncedValue] = useState<string>("");
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
@@ -32,7 +34,12 @@ export const PlantNursery = () => {
   const [deletingPlant, setDeletingPlant] = useState<string | null>("");
 
   const fetchPlants = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setInitialLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+
     setError(null);
 
     try {
@@ -62,7 +69,55 @@ export const PlantNursery = () => {
         setError("Error loading plants");
       }
     } finally {
-      setLoading(false);
+      setInitialLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const searchPlants = async () => {
+    if (!searchType || !debouncedValue.trim()) {
+      fetchPlants(1);
+      return;
+    }
+
+    setInitialLoading(true);
+    setError(null);
+
+    try {
+      let response;
+      let plantData;
+
+      switch (searchType) {
+        case "scientific_name":
+          response = await getPlantsByScientificName(debouncedValue);
+          plantData = response.data;
+          break;
+        case "common_name":
+          response = await getPlantsByCommonName(debouncedValue);
+          plantData = response.data;
+          break;
+        case "type":
+          response = await getPlantsByType(debouncedValue);
+          plantData = response.data;
+      }
+
+      if (plantData) {
+        setPlants(plantData.plants);
+      } else {
+        setPlants([]);
+      }
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        console.error(error.message);
+        setError(error.message);
+        setPlants([]);
+      } else {
+        setError("Couldn't process your search");
+      }
+    } finally {
+      setInitialLoading(false);
     }
   };
 
@@ -96,64 +151,17 @@ export const PlantNursery = () => {
 
   /* Dynamic search */
   useEffect(() => {
-    const search = async () => {
-      if (!searchType || !debouncedValue.trim()) {
-        fetchPlants(1);
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        let response;
-        let plantData;
-
-        switch (searchType) {
-          case "scientific_name":
-            response = await getPlantsByScientificName(debouncedValue);
-            plantData = response.data;
-            break;
-          case "common_name":
-            response = await getPlantsByCommonName(debouncedValue);
-            plantData = response.data;
-            break;
-          case "type":
-            response = await getPlantsByType(debouncedValue);
-            plantData = response.data;
-        }
-
-        if (plantData) {
-          setPlants(plantData.plants);
-        } else {
-          setPlants([]);
-        }
-      } catch (error) {
-        console.error(error);
-
-        if (error instanceof Error) {
-          console.error(error.message);
-          setError(error.message);
-          setPlants([]);
-        } else {
-          setError("Couldn't process your search");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    search();
-  }, [debouncedValue, searchType, searchValue]);
+    searchPlants();
+  }, [debouncedValue, searchType]);
 
   /* Infinite scroll */
   useEffect(() => {
     const handleScroll = throttle(() => {
-      if (loading || !hasMore) return;
+      if (initialLoading || loadingMore || !hasMore || debouncedValue) return;
 
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-      if (scrollHeight - scrollTop <= clientHeight * 1.5) {
+      if (scrollHeight - scrollTop <= clientHeight * 2.5) {
         setPage((prev) => prev + 1);
       }
     }, 1500);
@@ -161,14 +169,14 @@ export const PlantNursery = () => {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore]);
+  }, [initialLoading, loadingMore, hasMore, debouncedValue]);
 
   /* Debounce */
   useEffect(() => {
     if (!searchValue || searchValue.trim() === "") {
       setDebouncedValue("");
       setIsDebouncing(false);
-      fetchPlants(1)
+      fetchPlants(1);
       return;
     }
 
@@ -188,6 +196,7 @@ export const PlantNursery = () => {
         Welcome to the <span className="font-semibold">MyPlants Nursery</span>! This collaborative repository contains
         all the plants known to our users. Want to add a new one?
       </h2>
+
       {/* Add new plant */}
       <button
         onClick={() => setShowNewPlantModal((prev) => !prev)}
@@ -200,6 +209,7 @@ export const PlantNursery = () => {
           <NewNurseryPlantForm onClose={() => setShowNewPlantModal((prev) => !prev)} />
         </AddNewNurseryPlantModal>
       )}
+
       {/* Plant search */}
       <div className="mt-4 flex flex-col gap-2">
         <label htmlFor="searchType" className="font-medium">
@@ -223,16 +233,27 @@ export const PlantNursery = () => {
             onChange={(e) => setSearchValue(e.target.value)}
             className="font-[quicksand] text-sm max-w-[200px] px-2 py-1 rounded-lg border border-gray-400 text-gray-800 placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
           />
+
           {/* Loading spinner */}
-          {(isDebouncing || loading) && (
+          {(isDebouncing || initialLoading) && (
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <div className="h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Card skeletons */}
+      {initialLoading && plants.length === 0 && (
+        <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <PlantCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
       {/* Plants */}
-      <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl-grid-cols-5">
+      <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
         {plants.map((plant) => (
           <div
             key={plant._id}
@@ -241,10 +262,9 @@ export const PlantNursery = () => {
             <div className="w-full aspect-square overflow-hidden">
               <img src={plant.imgPublicUrl} alt={plant.scientific_name} className="w-full h-full object-cover" />
             </div>
-
             <p className="mt-2 font-semibold">{plant.scientific_name}</p>
             <p className="text-sm">{plant.common_name}</p>
-            <p className="mt-1 text-sm">Type: {plant.type}</p>
+            <p className="mt-1 mb-1 text-sm">Type: {plant.type}</p>
 
             {/* Edition for admin */}
             {user?.role === "admin" && (
@@ -295,14 +315,17 @@ export const PlantNursery = () => {
           </div>
         ))}
       </div>
-      {/* States */} {/* // TODO: Replace with spinner  */}
-      {loading && plants.length > 0 && (
-        <div className="absolute right-2 top-1/2 -translate-y-1/2">
-          <div className="h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+
+      {/* States */}
+      {loadingMore && hasMore && plants.length > 0 && (
+        <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <PlantCardSkeleton key={i} />
+          ))}
         </div>
       )}
       {error && <p>{error}</p>}
-      {!hasMore && <p>You're all caught up!</p>}
+      {!hasMore && <p className="text-center mb-4 font-medium">You're all caught up!</p>}
     </>
   );
 };

@@ -43,7 +43,7 @@ export const ProfileLayout = () => {
   return isMyProfile ? (
     <div className="h-full flex flex-col">
       {/* Title */}
-      <h1 className="text-2xl mb-4">Hello {person}! Welcome to your profile.</h1>
+      <h1 className="text-2xl mt-3 mb-4">Hello {person}! Welcome to your profile.</h1>
       {/* Profile pic, bio and edit button */}
       <div className="flex gap-4 w-fit items-start">
         <img className="w-25 rounded-xl" src={user!.imgPublicUrl} alt={user!.username} />

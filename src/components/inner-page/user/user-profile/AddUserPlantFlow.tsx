@@ -47,7 +47,7 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
     return (
       <>
         <div className="flex flex-col mt-2 gap-1">
-          <h3 className="underline text-center font-semibold mt-2">Find your plant in the MyPlants Nursery</h3>
+          <h3 className="underline text-center font-semibold mt-2 text-md">Find your plant in the Nursery</h3>
           {/* Search */}
           <div className="flex justify-center mt-2 gap-1">
             <input
@@ -63,20 +63,17 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
               }}
               className="w-fit border border-gray-800 rounded-md p-1 placeholder: text-sm placeholder: text-gray-900"
             />
-            <button onClick={handleSearch} className="cursor-pointer font-medium border border-gray-900 rounded-md p-1">
-              Search
-            </button>
           </div>
 
           {/* Error */}
           {error && (
-            <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
+            <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-full text-sm font-medium font-[quicksand] mt-1 mx-auto">
               {error}
             </p>
           )}
 
           {/* Results */}
-          <div className="flex flex-col gap-2 overflow-y-auto mt-3 pb-2 max-h-96">
+          <div className="flex flex-col gap-2 overflow-y-auto mt-3 pb-2">
             {results.map((plant) => (
               <div
                 key={plant._id}
@@ -101,12 +98,18 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
               </div>
             ))}
           </div>
-          <button
-            onClick={onClose}
-            className="cursor-pointer self-center font-medium border border-gray-900 rounded-md p-1 bg-[#c53030] opacity-90"
-          >
-            Cancel
-          </button>
+          {/* Buttons */}
+          <div className="flex gap-2 justify-center">
+            <button onClick={handleSearch} className="cursor-pointer font-medium border border-gray-900 rounded-md p-1">
+              Search
+            </button>
+            <button
+              onClick={onClose}
+              className="cursor-pointer self-center font-medium border border-gray-900 rounded-md p-1 bg-[#c53030] opacity-90"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </>
     );
@@ -115,10 +118,7 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
   if (step === "form") {
     return (
       <>
-        <button
-          onClick={() => setStep("search")}
-          className="cursor-pointer font-medium mb-4 flex items-center gap-1"
-        >
+        <button onClick={() => setStep("search")} className="cursor-pointer font-medium mb-4 flex items-center gap-1">
           <svg width="21" height="21">
             <use href="/public/assets/spritesheet.svg#logout-icon" />
           </svg>

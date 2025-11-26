@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context";
 import { Unauthorized } from "./Unauthorized";
+import { AppLoadingSkeleton } from "../../components/inner-page";
 
 interface Props {
   requiredRole?: string;
@@ -9,7 +10,7 @@ interface Props {
 export const PrivateGuard = ({ requiredRole }: Props) => {
   const { isAuth, hasRole, loadingAuth } = useAuth();
 
-  if (loadingAuth) return <p>Authenticating user...</p>; // TODO: Replace for spinner
+  if (loadingAuth) return <AppLoadingSkeleton />; // TODO: Don't apply profile skeleton on nursery or find friends
 
   if (!isAuth) return <Navigate to="/login" replace />;
 
