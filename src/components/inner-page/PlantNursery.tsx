@@ -8,7 +8,7 @@ import {
   getPlantsByType,
 } from "../../services";
 import { AddNewNurseryPlantModal, AdminEditPlant, ConfirmDeleteModal } from "../modals";
-import { NewNurseryPlantForm } from "./user/user-nursery/NewNurseryPlantForm";
+import { NewNurseryPlantForm } from "./user/";
 import { throttle } from "lodash";
 import { useAuth } from "../../context";
 import { AdminEditPlantForm } from "./admin";
@@ -61,7 +61,6 @@ export const PlantNursery = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("There was an error loading plants");
 
       if (error instanceof Error) {
         setError(error.message);
@@ -164,7 +163,7 @@ export const PlantNursery = () => {
       if (scrollHeight - scrollTop <= clientHeight * 2.5) {
         setPage((prev) => prev + 1);
       }
-    }, 1500);
+    }, 1000);
 
     window.addEventListener("scroll", handleScroll);
 
@@ -213,7 +212,7 @@ export const PlantNursery = () => {
       {/* Plant search */}
       <div className="mt-4 flex flex-col gap-2">
         <label htmlFor="searchType" className="font-medium">
-          Search for a plant:{" "}
+          Search for a plant:
         </label>
         <select
           name="searchType"

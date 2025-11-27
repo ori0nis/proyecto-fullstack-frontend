@@ -1,49 +1,149 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserByUsername } from "../services";
+import { getFriendsPlants, getUserByUsername } from "../services";
 import type { UserProfile } from "../models/user";
+import { PlantCardSkeleton, ProfileCardLoadingSkeleton } from "../components/inner-page";
+import type { UserPlant } from "../models/plant";
+import { throttle } from "lodash";
 
 export const OtherUserProfilePage = () => {
   const { username } = useParams<{ username: string }>();
+  const [plants, setPlants] = useState<UserPlant[]>([]);
   const [friend, setFriend] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  /* Pagination states */
+  const [initialLoading, setInitialLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+
+  /* Fetch user */
+  const fetchUser = async () => {
+    if (page === 1) {
+      setInitialLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+
+    setError(null);
+
+    if (username) {
+      try {
+        const response = await getUserByUsername(username);
+
+        if (response?.data?.users && response.data.users.length > 0) {
+          const userProfile = response.data.users[0];
+          setFriend(userProfile);
+        }
+      } catch (error) {
+        console.error(error);
+
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Error loading profile");
+        }
+      } finally {
+        setInitialLoading(false);
+      }
+    }
+  };
+
+  /* Fetch plants */
+  const fetchPlants = async (page = 1) => {
+    if (page === 1) {
+      setInitialLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+
+    setError(null);
+
+    try {
+      if (!username) return;
+
+      const response = await getFriendsPlants(username, page);
+      const userData = response.data;
+
+      if (userData && userData.plants && Array.isArray(userData.plants)) {
+        if (page === 1) {
+          setPlants(userData.plants);
+        } else {
+          setPlants((prev) => [...prev, ...userData.plants]);
+        }
+
+        const nextPageExists = !!userData.meta?.hasMore;
+        setHasMore(nextPageExists);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Error loading plants");
+      }
+    } finally {
+      setInitialLoading(false);
+      setLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
-    if (username) {
-      setLoading(true);
+    if (!username) return;
 
-      const fetchUser = async () => {
-        try {
-          const response = await getUserByUsername(username);
-
-          if (response?.data?.users && response.data.users.length > 0) {
-            const userProfile = response.data.users[0];
-            setFriend(userProfile);
-          }
-        } catch (error) {
-          console.error(error);
-          alert("There was an error loading the profile");
-
-          if (error instanceof Error) {
-            setError(error.message);
-          } else {
-            setError("Error loading profile");
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchUser();
-    }
+    setPage(1);
+    setPlants([]);
+    setIsFirstLoad(true);
+    fetchUser();
+    fetchPlants(1).finally(() => setIsFirstLoad(false));
   }, [username]);
 
-  if (loading) return <p>Loading...</p>;
-  if (!friend) return <p>User not found</p>;
+  /* Pagination */
+  useEffect(() => {
+    if (page === 1) return;
+
+    fetchPlants(page);
+  }, [page]);
+
+  /* Infinite scroll */
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      if (initialLoading || loadingMore || !hasMore) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+      if (scrollHeight - scrollTop <= clientHeight * 2.5) {
+        setPage((prev) => prev + 1);
+      }
+    }, 1000);
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (initialLoading && isFirstLoad) {
+    return (
+      <>
+        {/* Profile card skeleton */}
+        <ProfileCardLoadingSkeleton />
+
+        {/* Plants skeleton */}
+        <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <PlantCardSkeleton key={i} />
+          ))}
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
+      {/* Friend card */}
       {username && (
         <div className="flex flex-col h-full">
           <div className="flex gap-4 w-fit items-start">
@@ -55,10 +155,14 @@ export const OtherUserProfilePage = () => {
             </div>
           </div>
           <span className="w-full mt-4 border-t" />
+
+          {/* Plants */}
           <h3 className="mt-5 text-2xl">Plants:</h3>
-          {friend?.plants && friend?.plants.length > 0 ? (
-            <div className="mt-4 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl-grid-cols-5">
-              {friend?.plants.map((plant) => (
+          {!initialLoading && !isFirstLoad && plants.length === 0 ? (
+            <p className="mt-3">No plants yet 🌱</p>
+          ) : plants.length > 0 ? (
+            <div className="mt-4 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+              {plants.map((plant) => (
                 <div
                   key={plant._id}
                   className="rounded-lg shadow-md shadow-neutral-500 overflow-hidden flex flex-col items-center text-center"
@@ -71,12 +175,25 @@ export const OtherUserProfilePage = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <p className="mt-3">No plants yet 🌱</p>
-          )}
+          ) : null}
         </div>
       )}
-      {error && <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">{error}</p>}
+
+      {/* Infinite scroll skeletons */}
+      {loadingMore && hasMore && (
+        <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <PlantCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
+          {error}
+        </p>
+      )}
     </>
   );
 };

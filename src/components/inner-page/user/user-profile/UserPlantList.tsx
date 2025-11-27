@@ -3,16 +3,21 @@ import { deleteUserPlant } from "../../../../services";
 import { ConfirmDeleteModal, EditUserPlantModal } from "../../../modals";
 import { EditUserPlantForm } from "./EditUserPlantForm";
 import type { UserPlant } from "../../../../models/plant";
+import { PlantCardSkeleton } from "../..";
 
 interface Props {
   plants: UserPlant[];
   setPlants: React.Dispatch<React.SetStateAction<UserPlant[]>>;
   fetchPlants: () => void;
+  initialLoading: boolean;
+  loadingMore: boolean;
+  hasMore: boolean;
 }
 
-export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
+export const UserPlantList = ({ plants, setPlants, fetchPlants, initialLoading, loadingMore, hasMore }: Props) => {
   const [editingPlant, setEditingPlant] = useState<string | null>(null);
   const [deletingPlant, setDeletingPlant] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const handleConfirmDelete = async (plantId: string) => {
     try {
@@ -22,12 +27,28 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
         setPlants((prev) => prev.filter((plant) => plant._id !== plantId));
         setDeletingPlant(null);
       } else {
-        alert("Couldn't delete your plant");
+        console.error("Error deleting your plant");
       }
     } catch (error) {
-      console.error("Couldn't delete plant: ", error);
+      console.error(error);
+
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Error deleting your plant");
+      }
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <PlantCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
 
   if (plants.length === 0) return <p className="text-md mt-3">Your plot is empty. Add a new plant now!</p>;
 
@@ -43,9 +64,7 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
             <div className="w-full aspect-square overflow-hidden">
               <img src={plant.imgPublicUrl} alt={plant.nameByUser} className="w-full h-full object-cover" />
             </div>
-            <p className="mt-2 font-semibold">{plant.nameByUser}</p>
-            <p className="text-sm">{plant.scientific_name}</p>
-
+            <p className="mt-2 font-semibold">{plant.nameByUser}</p> <p className="text-sm">{plant.scientific_name}</p>
             {/* Buttons */}
             <div className="flex gap-2 mt-2 mb-1 p-1 w-full">
               {/* Plant edit */}
@@ -60,7 +79,6 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
                   <EditUserPlantForm plantId={plant._id} onEdited={fetchPlants} onClose={() => setEditingPlant(null)} />
                 </EditUserPlantModal>
               )}
-
               {/* Plant delete */}
               <button
                 onClick={() => setDeletingPlant(plant._id)}
@@ -80,6 +98,22 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants }: Props) => {
           </div>
         ))}
       </div>
+
+      {/* Infinite scroll skeletons */}
+      {loadingMore && hasMore && (
+        <div className="mt-2 p-6 grid grid-cols-1 gap-4 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <PlantCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
+          {error}
+        </p>
+      )}
     </>
   );
 };

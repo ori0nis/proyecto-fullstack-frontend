@@ -166,9 +166,20 @@ export const changePassword = async (
 };
 
 // GET USER PLANTS
-export const getUserPlants = async (): Promise<UserPlantResponse<UserPlant>> => {
+export const getUserPlants = async (page = 1, limit = 20): Promise<UserPlantResponse<UserPlant>> => {
   try {
-    const response = await API.get("/users/user/profile/plants");
+    const response = await API.get("/users/user/profile/plants", { params: { page, limit } });
+
+    return response.data;
+  } catch (error) {
+    throw axiosErrorHandler(error);
+  }
+};
+
+// GET FRIEND'S PLANTS
+export const getFriendsPlants = async (username: string, page = 1, limit = 20) => {
+  try {
+    const response = await API.get(`/users/search/friend/plants`, { params: { username, page, limit } });
 
     return response.data;
   } catch (error) {

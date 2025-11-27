@@ -28,7 +28,6 @@ export const FindFriendsPage = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("There was an error in your search");
 
       if (error instanceof Error) {
         setError(error.message);
@@ -40,7 +39,8 @@ export const FindFriendsPage = () => {
     }
   };
 
-  if (loading) return <p>Searching...</p>;
+  if (loading)
+    return <div className="h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>;
 
   return (
     <>
