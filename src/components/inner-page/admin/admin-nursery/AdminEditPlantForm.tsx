@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { AdminEditNurseryPlantSchema, type AdminEditNurseryPlantFormValues } from "../../../../zod";
+import { EditNurseryPlantSchema, type EditNurseryPlantFormValues } from "../../../../zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { editPlant } from "../../../../services";
@@ -17,8 +17,8 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<AdminEditNurseryPlantFormValues>({
-    resolver: zodResolver(AdminEditNurseryPlantSchema),
+  } = useForm<EditNurseryPlantFormValues>({
+    resolver: zodResolver(EditNurseryPlantSchema),
     mode: "onChange",
     defaultValues: {
       scientific_name: "",
@@ -29,7 +29,7 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
 
-  const onSubmit = async (data: AdminEditNurseryPlantFormValues) => {
+  const onSubmit = async (data: EditNurseryPlantFormValues) => {
     setLoading(true);
     setError(null);
 
@@ -56,12 +56,10 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-
   return (
     <>
       <div>
-        <h3>Edit nursery plant</h3>
+        <h3 className="underline text-center font-semibold mt-2 mb-2">Edit nursery plant</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputAdminEditNurseryPlant
             label="Scientific name: "
@@ -70,6 +68,10 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
             placeholder="New scientific name..."
             error={errors.scientific_name}
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputAdminEditNurseryPlant
             label="Common name: "
@@ -78,13 +80,22 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
             placeholder="New common name..."
             error={errors.common_name}
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputAdminEditNurseryPlant
             label="Plant img: "
             name="plantImg"
             type="file"
             error={errors.plantImg}
+            as="file"
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputAdminEditNurseryPlant
             label="Type: "
@@ -93,13 +104,29 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
             placeholder="New type..."
             error={errors.type}
             control={control}
+            containerClassname="mx-auto text-center p-2"
+            labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
+            inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] wrap-break-word max-w-[150px] mx-auto mt-1"
           />
-          <button type="submit" disabled={loading}>
-            Submit
-          </button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+
+          {/* Buttons */}
+          <div className="flex gap-2 justify-center mt-3">
+            <button
+              type="submit"
+              disabled={loading}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
         {error && <p className="">{error}</p>}
       </div>

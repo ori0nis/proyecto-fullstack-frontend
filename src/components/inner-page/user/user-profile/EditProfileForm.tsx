@@ -174,6 +174,8 @@ export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
           >
             Submit
           </button>
+
+          {/* States */}
           {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
           {success && (
             <p className="text-[#3d8861] text-sm font-medium font-[quicksand] mt-2">Profile updated successfully!</p>

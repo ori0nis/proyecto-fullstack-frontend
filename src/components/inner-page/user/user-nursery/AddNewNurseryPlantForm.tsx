@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { NewNurseryPlantSchema, type NewNurseryPlantFormValues } from "../../../../zod";
+import { AddNurseryPlantSchema, type AddNurseryPlantFormValues } from "../../../../zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { postNewPlant } from "../../../../services";
@@ -9,14 +9,14 @@ interface Props {
   onClose: () => void;
 }
 
-export const NewNurseryPlantForm = ({ onClose }: Props) => {
+export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
   const {
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<NewNurseryPlantFormValues>({
-    resolver: zodResolver(NewNurseryPlantSchema),
+  } = useForm<AddNurseryPlantFormValues>({
+    resolver: zodResolver(AddNurseryPlantSchema),
     mode: "onChange",
     defaultValues: {
       scientific_name: "",
@@ -29,7 +29,7 @@ export const NewNurseryPlantForm = ({ onClose }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const onSubmit = async (data: NewNurseryPlantFormValues) => {
+  const onSubmit = async (data: AddNurseryPlantFormValues) => {
     setLoading(true);
 
     try {

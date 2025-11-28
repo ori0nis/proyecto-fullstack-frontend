@@ -7,8 +7,8 @@ import {
   getPlantsByScientificName,
   getPlantsByType,
 } from "../../services";
-import { AddNewNurseryPlantModal, AdminEditPlant, ConfirmDeleteModal } from "../modals";
-import { NewNurseryPlantForm } from "./user/";
+import { AddNewNurseryPlantModal, AdminEditPlantModal, ConfirmDeleteModal } from "../modals";
+import { AddNewNurseryPlantForm } from "./user/";
 import { throttle } from "lodash";
 import { useAuth } from "../../context";
 import { AdminEditPlantForm } from "./admin";
@@ -205,7 +205,7 @@ export const PlantNursery = () => {
       </button>
       {showNewPlantModal && (
         <AddNewNurseryPlantModal isOpen={showNewPlantModal} onClose={() => setShowNewPlantModal((prev) => !prev)}>
-          <NewNurseryPlantForm onClose={() => setShowNewPlantModal((prev) => !prev)} />
+          <AddNewNurseryPlantForm onClose={() => setShowNewPlantModal((prev) => !prev)} />
         </AddNewNurseryPlantModal>
       )}
 
@@ -267,17 +267,17 @@ export const PlantNursery = () => {
 
             {/* Edition for admin */}
             {user?.role === "admin" && (
-              <div className="flex gap-2 mt-2 mb-1 p-1 w-full">
+              <div className="flex gap-1.5 mt-2 mb-1 p-1">
                 <button
                   onClick={() => {
                     setEditingPlant(plant._id);
                   }}
-                  className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded hover:bg-green-400 transition duration-300"
+                  className="cursor-pointer px-3 py-1 text-sm border rounded-lg hover:bg-green-400 transition duration-300"
                 >
-                  Edit plant
+                  Edit
                 </button>
                 {editingPlant === plant._id && (
-                  <AdminEditPlant isOpen={true} onClose={() => setEditingPlant(null)}>
+                  <AdminEditPlantModal isOpen={true} onClose={() => setEditingPlant(null)}>
                     <AdminEditPlantForm
                       plantId={plant._id}
                       onClose={() => setEditingPlant(null)}
@@ -286,7 +286,7 @@ export const PlantNursery = () => {
                         setEditingPlant(null);
                       }}
                     />
-                  </AdminEditPlant>
+                  </AdminEditPlantModal>
                 )}
 
                 {/* Deletion for admin */}
@@ -294,9 +294,9 @@ export const PlantNursery = () => {
                   onClick={() => {
                     setDeletingPlant(plant._id);
                   }}
-                  className="flex-1 cursor-pointer px-3 py-1 text-sm border rounded hover:bg-red-400 transition duration-300"
+                  className="cursor-pointer px-3 py-1 text-sm border rounded-lg hover:bg-red-400 transition duration-300"
                 >
-                  Delete plant
+                  Delete
                 </button>
                 {deletingPlant === plant._id && (
                   <ConfirmDeleteModal

@@ -8,7 +8,7 @@ interface Props {
   type?: string;
   placeholder?: string;
   error?: FieldError;
-  as?: "input" | "textarea" | "file";
+  as?: "text" | "textarea" | "file";
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (value: string) => void;
@@ -25,7 +25,7 @@ export const InputEditProfile = ({
   type = "text",
   placeholder,
   error,
-  as = "input",
+  as = "text",
   onFocus = () => {},
   onBlur = () => {},
   onChange = () => {},
@@ -39,7 +39,6 @@ export const InputEditProfile = ({
       <label htmlFor={name} className={labelClassname}>
         {label}
       </label>
-
       <Controller
         name={name}
         control={control}
@@ -93,9 +92,7 @@ export const InputEditProfile = ({
                   }}
                 />
 
-                {field.value && field.value instanceof File && (
-                  <p className="text-xs mt-1">{field.value.name}</p>
-                )}
+                {field.value && field.value instanceof File && <p className="text-xs mt-1">{field.value.name}</p>}
 
                 {error && <p className={errorClassname}>{error.message}</p>}
               </div>

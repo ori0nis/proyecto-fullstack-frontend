@@ -37,7 +37,7 @@ export const PasswordChecklist = ({ password }: Props) => {
   ];
 
   return (
-    <div className="z-9999 w-full mx-auto bg-[#FFF8E7] opacity-70 text-gray-600 text-xs text-left rounded shadow p-2 max-w-[200px]">
+    <div className="z-9999 w-full mx-auto bg-[#FFF8E7] opacity-75 text-gray-600 text-xs text-left rounded shadow p-2 max-w-[200px]">
       {rules.map((rule, i) => (
         <p key={i} className={rule.constraint ? "font-[quicksand] font-extrabold text-[#3d8861]" : "font-[quicksand] font-extrabold text-[#c53030]"}>
           {rule.constraint ? "✓" : "✗"} {rule.message}
