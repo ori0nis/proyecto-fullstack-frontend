@@ -65,7 +65,7 @@ export const DeleteAccountForm = () => {
   return (
     <>
       <div className="text-center mx-auto xs:max-w-[70%]">
-        <h2 className="text-[#c53030] font-medium mb-2">
+        <h2 className="text-[#c53030] font-semibold mb-2 underline">
           Are you sure you want to delete your account? This action can't be undone
         </h2>
         <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>

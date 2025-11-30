@@ -49,6 +49,7 @@ export const ProfileLayout = () => {
       }
     } catch (error) {
       console.error(error);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
@@ -69,7 +70,7 @@ export const ProfileLayout = () => {
   /* Pagination */
   useEffect(() => {
     if (page === 1) return;
-    
+
     fetchPlants(page);
   }, [page]);
 
@@ -94,7 +95,8 @@ export const ProfileLayout = () => {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Title */} <h1 className="text-2xl mt-3 mb-4">Hello {person}! Welcome to your profile.</h1>
+      {/* Title */}
+      <h1 className="text-2xl mt-3 mb-4">Hello {person}! Welcome to your profile.</h1>
 
       {/* Profile pic, bio and edit button */}
       <div className="flex gap-4 w-fit items-start">

@@ -69,7 +69,7 @@ export const UserSidebar = () => {
 
       {/* Small screen dropdown icon */}
       <button
-        className="md:hidden fixed top-2 right-2 z-50 text-3xl font-bold p-0.5 border rounded-sm border-gray-600"
+        className="md:hidden fixed top-2 right-2 z-50 text-3xl font-bold p-0.5 border rounded-sm border-gray-600 cursor-pointer"
         onClick={() => setDropdownSidebar((prev) => !prev)}
       >
         <svg width="26" height="24">

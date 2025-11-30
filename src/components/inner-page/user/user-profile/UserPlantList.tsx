@@ -65,7 +65,6 @@ export const UserPlantList = ({ plants, setPlants, fetchPlants, initialLoading, 
               <img src={plant.imgPublicUrl} alt={plant.nameByUser} className="w-full h-full object-cover" />
             </div>
             <p className="mt-2 font-semibold">{plant.nameByUser}</p> <p className="text-sm">{plant.scientific_name}</p>
-            
             {/* Buttons */}
             <div className="flex gap-2 mt-2 mb-1 p-1 w-full">
               {/* Plant edit */}

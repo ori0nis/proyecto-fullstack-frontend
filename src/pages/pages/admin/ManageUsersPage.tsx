@@ -8,18 +8,23 @@ export const ManageUsersPage = () => {
   const [searchType, setSearchType] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
   const [users, setUsers] = useState<PublicUser[]>([]);
   /* Pagination states */
+  const [initialLoading, setInitialLoading] = useState<boolean>(false);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [isAllUsersMode, setIsAllUsersMode] = useState<boolean>(false);
 
+  /* User fetch */
   const fetchAllUsers = async (page = 1) => {
-    setLoading(true);
+    if (page === 1) {
+      setInitialLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+
     setError(null);
-    setSuccess(false);
 
     try {
       const response = await getAllUsers(page);
@@ -34,15 +39,12 @@ export const ManageUsersPage = () => {
 
         const nextPageExists = !!userData.meta?.hasMore;
         setHasMore(nextPageExists);
-        setSuccess(true);
       } else {
         setHasMore(false);
-        setSuccess(false);
         setUsers([]);
       }
     } catch (error) {
       console.error(error);
-      alert("There was an error searching for users");
 
       if (error instanceof Error) {
         setError(error.message);
@@ -50,21 +52,16 @@ export const ManageUsersPage = () => {
         setError("Error loading users");
       }
     } finally {
-      setLoading(false);
+      setInitialLoading(false);
+      setLoadingMore(false);
     }
   };
 
-  const handleSearchAll = async () => {
-    setPage(1);
-    setIsAllUsersMode(true);
-    await fetchAllUsers(1);
-  };
-
+  /* Individual user search */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setInitialLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
       let response;
@@ -87,9 +84,8 @@ export const ManageUsersPage = () => {
 
       if (userData) {
         setUsers(userData.users);
-        setSuccess(true);
       } else {
-        setSuccess(false);
+        console.error("No users found");
       }
     } catch (error) {
       console.error(error);
@@ -101,55 +97,87 @@ export const ManageUsersPage = () => {
         setError("Couldn't process your search");
       }
     } finally {
-      setLoading(false);
+      setInitialLoading(false);
     }
   };
 
+  /* Pagination */
   useEffect(() => {
-    if (page > 1 && isAllUsersMode) fetchAllUsers(page);
+    if (page === 1 || !isAllUsersMode) return;
+    fetchAllUsers(page);
   }, [page, isAllUsersMode]);
 
+  /* Infinite scroll */
   useEffect(() => {
     if (!isAllUsersMode) return;
 
     const handleScroll = throttle(() => {
-      if (loading || !hasMore) return;
+      if (initialLoading || loadingMore || !hasMore) return;
 
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
       if (scrollHeight - scrollTop <= clientHeight * 1.5) {
         setPage((prev) => prev + 1);
       }
-    }, 500);
+    }, 1000);
 
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isAllUsersMode, loading, hasMore]);
+  }, []);
 
   return (
     <>
-      <div>
+      <div className="mt-4 flex flex-col gap-2">
         <form action="post" onSubmit={handleSubmit}>
-          <label htmlFor="searchType">Select your type of search: </label>
-          <select name="searchType" id="searchType" value={searchType} onChange={(e) => setSearchType(e.target.value)}>
-            <option value="">-- Choose a search type --</option>
-            <option value="id">Search by id</option>
-            <option value="email">Search by email</option>
-            <option value="username">Search by username</option>
-          </select>
-          <input value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-          <button type="submit">Submit</button>
+          <div className="mt-4 flex flex-col gap-2 p-2 border rounded-lg w-fit">
+            {/* Search */}
+            <label htmlFor="searchType">Search for a user: </label>
+            <select
+              name="searchType"
+              id="searchType"
+              value={searchType}
+              onChange={(e) => setSearchType(e.target.value)}
+              className="text-sm border p-1 rounded-lg max-w-[200px]"
+            >
+              <option value="">-- Choose a search type --</option>
+              <option value="id">Search by id</option>
+              <option value="email">Search by email</option>
+              <option value="username">Search by username</option>
+            </select>
+            <input
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="font-[quicksand] text-sm max-w-[200px] px-2 py-1 rounded-lg border border-gray-400 text-gray-800 placeholder:text-gray-400 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#183f30] focus:border-[#183f30] transition-colors duration-200"
+            />
+            <button
+              type="submit"
+              className="self-start cursor-pointer font-medium border border-gray-900 rounded-md p-1"
+            >
+              Submit
+            </button>
+          </div>
         </form>
         {/* Trigger of search all */}
-        <button onClick={handleSearchAll}>Click here for a list of all users</button>
-        {/* UserList with prop */}
-        <UserList users={users} />
-        {/* Loader */} {/* // TODO: Replace with spinner  */}
-        {loading && users.length > 0 && <p>Loading more users...</p>}
-        {error && <p>{error}</p>}
-        {success && <p>Successfully loaded users!</p>}
-        {!hasMore && isAllUsersMode && <p>You're all caught up</p>}
+        <button
+          onClick={() => {
+            setIsAllUsersMode(true);
+            setPage(1);
+            fetchAllUsers(1);
+          }}
+          className="cursor-pointer w-fit text-md border pr-3 pl-3 pt-0.5 pb-0.5 rounded-lg font-medium text-sm mt-4 bg-amber-300"
+        >
+          Click here for a list of all users
+        </button>
+        {/* UserList */}
+        <UserList users={users} initialLoading={initialLoading} loadingMore={loadingMore} hasMore={hasMore} />
+        {/* States */} {/* // TODO: Replace with spinner  */}
+        {initialLoading && users.length > 0 && <p>Loading more users...</p>}
+        {error && (
+          <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
+            {error}
+          </p>
+        )}
       </div>
     </>
   );
