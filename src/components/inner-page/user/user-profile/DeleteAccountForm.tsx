@@ -70,7 +70,7 @@ export const DeleteAccountForm = () => {
         </h2>
         <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputDeleteAccount
-            label="Password: "
+            label="Password*: "
             name="password"
             control={control}
             type="password"
@@ -81,7 +81,7 @@ export const DeleteAccountForm = () => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputDeleteAccount
-            label="Confirm password: "
+            label="Confirm password*: "
             name="confirm_password"
             control={control}
             type="password"

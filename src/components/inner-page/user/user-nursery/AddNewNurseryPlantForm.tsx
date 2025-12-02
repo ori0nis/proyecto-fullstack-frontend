@@ -63,7 +63,7 @@ export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
         <h3 className="underline text-center font-semibold mt-2">Add a new plant</h3>
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputNewNurseryPlant
-            label="Scientific name: "
+            label="Scientific name*: "
             name="scientific_name"
             type="text"
             placeholder="Scientific name..."
@@ -75,7 +75,7 @@ export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputNewNurseryPlant
-            label="Common name: "
+            label="Common name*: "
             name="common_name"
             type="text"
             placeholder="Common name..."
@@ -87,7 +87,7 @@ export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputNewNurseryPlant
-            label="Plant type: "
+            label="Plant type*: "
             name="type"
             type="text"
             placeholder="Plant type..."
@@ -99,7 +99,7 @@ export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] wrap-break-word max-w-[150px] mx-auto mt-1"
           />
           <InputNewNurseryPlant
-            label="Plant image: "
+            label="Plant image*: "
             name="plantImg"
             type="file"
             control={control}
