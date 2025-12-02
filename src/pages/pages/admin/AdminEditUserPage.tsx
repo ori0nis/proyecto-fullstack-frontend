@@ -23,8 +23,10 @@ export const AdminEditUserPage = () => {
 
   return (
     <>
-      <h1>Editing user: {targetUser.username}</h1>
-      <EditProfileForm targetUser={targetUser} onSuccess={handleFormSuccessAdmin} key={formKey} />
+      <h1 className="mt-4 text-lg font-medium rounded-lg border w-fit p-2 bg-red-300 text-center mx-auto">Editing user: <span className="font-bold">{targetUser.username}</span></h1>
+      <div className="w-fit mx-auto mt-4">
+        <EditProfileForm targetUser={targetUser} onSuccess={handleFormSuccessAdmin} key={formKey} />
+      </div>
     </>
   );
 };

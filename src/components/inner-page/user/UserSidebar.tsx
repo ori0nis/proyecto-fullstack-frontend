@@ -16,9 +16,11 @@ export const UserSidebar = () => {
 
   return (
     <>
-      {/* // TODO: Logo */}
       {/* Big screen sidebar */}
       <aside className="sticky top-0 h-screen row-span-2 w-fit hidden md:flex flex-col gap-3 p-4 border-r border-gray-700">
+        {/* Logo */}
+        <img src="/public/images/myplants-logo.png" alt="myplants-logo" className="w-20 h-20 mx-auto object-contain" />
+
         {/* Links */}
         <NavLink
           to={`profile/${user?.username}`}

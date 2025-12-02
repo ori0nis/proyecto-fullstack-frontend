@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getFriendsPlants, getUserByUsername } from "../services";
+import { getFriendsPlants, getPublicUserByUsername } from "../services";
 import type { UserProfile } from "../models/user";
 import { PlantCardSkeleton, ProfileCardLoadingSkeleton } from "../components/inner-page";
 import type { UserPlant } from "../models/plant";
@@ -30,7 +30,7 @@ export const OtherUserProfilePage = () => {
 
     if (username) {
       try {
-        const response = await getUserByUsername(username);
+        const response = await getPublicUserByUsername(username);
 
         if (response?.data?.users && response.data.users.length > 0) {
           const userProfile = response.data.users[0];
@@ -189,11 +189,7 @@ export const OtherUserProfilePage = () => {
       )}
 
       {/* Error */}
-      {error && (
-        <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
     </>
   );
 };

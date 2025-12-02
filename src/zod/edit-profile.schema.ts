@@ -4,11 +4,16 @@ export const EditProfileSchema = z.object({
   username: z.string().optional().or(z.literal("")),
   email: z.email().optional().or(z.literal("")),
   profilePic: z
-    .instanceof(File, { error: "Please upload a valid image" })
+    .instanceof(File)
     .optional()
     .refine((file) => !file || file.size <= 5 * 1024 * 1024, "Image must be less than 5MB")
     .refine((file) => !file || ["image/jpeg", "image/png"].includes(file.type), "Only JPEG and PNG images are allowed"),
-  plant_care_skill_level: z.enum(["beginner", "intermediate", "advanced", "Demeter"]).optional(),
+  plant_care_skill_level: z
+    .string()
+    .refine((val) => ["beginner", "intermediate", "advanced", "Demeter"].includes(val), {
+      message: "beginner, intermediate, advanced",
+    })
+    .optional(),
   profile_bio: z.string().max(60).optional(),
   password: z.string(),
 });

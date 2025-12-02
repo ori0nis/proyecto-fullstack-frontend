@@ -69,7 +69,6 @@ export const LoginForm = () => {
 
   return (
     <>
-    {/* // TODO: GSAP */}
       <div className="bg-[#b8d6c4] border-gray-400 rounded-lg text-center shadow-[-6px_6px_12px_rgba(0,0,0,0.18)]">
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputLogin

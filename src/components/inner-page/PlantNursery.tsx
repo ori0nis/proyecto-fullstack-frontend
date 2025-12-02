@@ -323,11 +323,7 @@ export const PlantNursery = () => {
           ))}
         </div>
       )}
-      {error && (
-        <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
       {!hasMore && <p className="text-center mb-4 font-medium">You're all caught up!</p>}
     </>
   );

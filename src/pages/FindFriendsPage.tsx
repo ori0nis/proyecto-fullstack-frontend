@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getUserByUsername } from "../services";
+import { getPublicUserByUsername } from "../services";
 import type { UserProfile } from "../models/user";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export const FindFriendsPage = () => {
     setSuccess(false);
 
     try {
-      const userFound = await getUserByUsername(username);
+      const userFound = await getPublicUserByUsername(username);
 
       if (userFound.data && userFound.data.users) {
         setSuccess(true);

@@ -67,7 +67,7 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
 
           {/* Error */}
           {error && (
-            <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-full text-sm font-medium font-[quicksand] mt-1 mx-auto">
+            <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">
               {error}
             </p>
           )}

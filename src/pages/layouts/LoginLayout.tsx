@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { LoginForm } from "../../components/login";
+import { PlantAnimation } from "../../components/gsap";
 
 export const LoginLayout = () => {
   return (
-    <div className="flex flex-col p-3 bg-[#c1dcc9] h-screen items-center justify-center">
+    <div className="flex flex-col bg-[#c1dcc9] h-screen items-center justify-center">
+      {/* GSAP */}
+      <PlantAnimation />
+
       {/* Title */}
       <h1 className="font-[quicksand] text-[#183f30] font-bold text-4xl mb-8">MyPlants.io</h1>
 

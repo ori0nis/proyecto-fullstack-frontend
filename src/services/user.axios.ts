@@ -102,7 +102,7 @@ export const getUserByEmail = async (email: string): Promise<UserResponse<Public
 };
 
 // GET USER BY USERNAME (PUBLIC)
-export const getUserByUsername = async (username: string): Promise<UserResponse<UserProfile>> => {
+export const getPublicUserByUsername = async (username: string): Promise<UserResponse<UserProfile>> => {
   try {
     const response = await API.get("/users/search/user/username", { params: { username } });
 
@@ -112,10 +112,10 @@ export const getUserByUsername = async (username: string): Promise<UserResponse<
   }
 };
 
-// GET USER BY USERNAME (ADMIN ONLY)
-export const getUserByUsernameAdmin = async (username: string): Promise<UserResponse<PublicUser>> => {
+// GET USER BY USERNAME (ADMIN)
+export const getUserByUsername = async (username: string): Promise<UserResponse<PublicUser>> => {
   try {
-    const response = await API.get("/users/search/user/username", { params: { username } });
+    const response = await API.get("/users/admin/search/user/username", { params: { username } });
 
     return response.data;
   } catch (error) {
@@ -132,7 +132,7 @@ export const editUser = async (id: string, updates: Partial<NewUser>): Promise<U
     if (updates.username && updates.username.trim() !== "") formData.append("username", updates.username);
     if (updates.plant_care_skill_level) formData.append("plant_care_skill_level", updates.plant_care_skill_level);
     if (updates.profilePic) formData.append("imgPath", updates.profilePic); // imgPath mirrors the backend name
-    if (updates.password) formData.append("currentPassword", updates.password); //currentPassword mirrors the backend name
+    if (updates.password) formData.append("currentPassword", updates.password); // currentPassword mirrors the backend name
     if (updates.profile_bio) formData.append("profile_bio", updates.profile_bio);
 
     const response = await API.put(`/users/user/${id}`, formData, {

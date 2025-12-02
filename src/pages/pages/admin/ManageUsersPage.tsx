@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { throttle } from "lodash";
-import { getAllUsers, getUserByEmail, getUserById, getUserByUsernameAdmin } from "../../../services";
+import { getAllUsers, getUserByEmail, getUserById, getUserByUsername } from "../../../services";
 import type { PublicUser } from "../../../models/user";
 import { UserList } from "../../../components/inner-page/admin";
 
@@ -62,6 +62,7 @@ export const ManageUsersPage = () => {
     e.preventDefault();
     setInitialLoading(true);
     setError(null);
+    setUsers([]);
 
     try {
       let response;
@@ -77,7 +78,7 @@ export const ManageUsersPage = () => {
           userData = response.data;
           break;
         case "username":
-          response = await getUserByUsernameAdmin(searchValue);
+          response = await getUserByUsername(searchValue);
           userData = response.data;
           break;
       }
@@ -89,7 +90,6 @@ export const ManageUsersPage = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("There was an error processing your search");
 
       if (error instanceof Error) {
         setError(error.message);
@@ -130,7 +130,7 @@ export const ManageUsersPage = () => {
     <>
       <div className="mt-4 flex flex-col gap-2">
         <form action="post" onSubmit={handleSubmit}>
-          <div className="mt-4 flex flex-col gap-2 p-2 border rounded-lg w-fit">
+          <div className="mt-4 flex flex-col gap-2 pl-4 pr-4 pt-2 pb-2 border rounded-lg w-fit">
             {/* Search */}
             <label htmlFor="searchType">Search for a user: </label>
             <select
@@ -170,14 +170,12 @@ export const ManageUsersPage = () => {
           Click here for a list of all users
         </button>
         {/* UserList */}
-        <UserList users={users} initialLoading={initialLoading} loadingMore={loadingMore} hasMore={hasMore} />
+        {(isAllUsersMode || users.length > 0) && (
+          <UserList users={users} initialLoading={initialLoading} loadingMore={loadingMore} hasMore={hasMore} />
+        )}
         {/* States */} {/* // TODO: Replace with spinner  */}
         {initialLoading && users.length > 0 && <p>Loading more users...</p>}
-        {error && (
-          <p className="text-black pl-2 pr-2 rounded-md bg-[#c53030] opacity-90 w-fit text-sm font-medium font-[quicksand] mt-1 mx-auto">
-            {error}
-          </p>
-        )}
+        {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
       </div>
     </>
   );

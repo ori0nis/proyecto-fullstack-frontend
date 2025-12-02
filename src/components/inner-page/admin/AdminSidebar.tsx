@@ -16,8 +16,11 @@ export const AdminSidebar = () => {
 
   return (
     <>
-      {/* // TODO: Logo */}
       <aside className="sticky top-0 h-screen row-span-2 w-fit hidden md:flex flex-col gap-3 p-4 border-r border-gray-700">
+        {/* Logo */}
+        <img src="/public/images/myplants-logo.png" alt="myplants-logo" className="w-20 h-20 mx-auto object-contain" />
+
+        {/* Links */}
         <NavLink
           to="admin-panel/manage-users"
           className="text-center relative inline-block px-3 py-1 bg-[#4CAF50] border border-[#2E7D32] text-white font-extrabold text-lg rounded-[999px] shadow-md shadow-[#2E7D32]/50 select-none tracking-wide overflow-hidden"
@@ -25,6 +28,7 @@ export const AdminSidebar = () => {
           <span className="-skew-x-10 inline-block">Admin Panel</span>
           <span className="pointer-events-none absolute top-0 left-0 w-full h-1/2 rounded-[999px] bg-[rgba(255,255,255,0.32)]" />
         </NavLink>
+
         <NavLink
           to={`profile/${user?.username}`}
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
@@ -34,6 +38,7 @@ export const AdminSidebar = () => {
           </svg>
           My Profile
         </NavLink>
+
         <NavLink
           to="nursery"
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
@@ -43,6 +48,7 @@ export const AdminSidebar = () => {
           </svg>
           Admin Nursery
         </NavLink>
+        
         {/* Log out */}
         <button
           onClick={logout}

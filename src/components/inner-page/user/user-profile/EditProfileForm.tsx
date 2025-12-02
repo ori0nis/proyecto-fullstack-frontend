@@ -153,7 +153,7 @@ export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
           />
           <span className="font-medium">{wordCount}/60</span>
 
-          {user?.role === "admin" && <h3>Input your password to complete user edit: </h3>}
+          {user?.role === "admin" && <h3 className="mt-3 mb-3">Input your password to complete user edit: </h3>}
           {user?.role === "user" && <h3 className="mt-3 mb-3">Confirm your password to complete your request:</h3>}
 
           <InputEditProfile
