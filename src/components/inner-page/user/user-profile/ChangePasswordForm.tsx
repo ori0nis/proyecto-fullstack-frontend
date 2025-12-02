@@ -72,7 +72,7 @@ export const ChangePasswordForm = () => {
       <div className="mx-auto text-center">
         <form action="post" key={formKey} onSubmit={handleSubmit(onSubmit)}>
           <InputChangePassword
-            label="Old password: "
+            label="Old password*: "
             name="old_password"
             control={control}
             type="password"
@@ -83,7 +83,7 @@ export const ChangePasswordForm = () => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputChangePassword
-            label="Confirm password: "
+            label="Confirm password*: "
             name="confirm_password"
             control={control}
             type="password"
@@ -94,7 +94,7 @@ export const ChangePasswordForm = () => {
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand]"
           />
           <InputChangePassword
-            label="New password: "
+            label="New password*: "
             name="new_password"
             control={control}
             type="password"

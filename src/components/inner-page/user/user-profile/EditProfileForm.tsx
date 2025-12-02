@@ -157,7 +157,7 @@ export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
           {user?.role === "user" && <h3 className="mt-3 mb-3">Confirm your password to complete your request:</h3>}
 
           <InputEditProfile
-            label="Password: "
+            label="Password:* "
             name="password"
             control={control}
             type="password"
