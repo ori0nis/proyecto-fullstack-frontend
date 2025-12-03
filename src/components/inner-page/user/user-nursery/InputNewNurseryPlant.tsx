@@ -1,10 +1,10 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { NewNurseryPlantFormValues } from "../../../../zod";
+import type { AddNurseryPlantFormValues } from "../../../../zod";
 
 interface Props {
   label: string;
-  name: keyof NewNurseryPlantFormValues;
-  control: Control<NewNurseryPlantFormValues>;
+  name: keyof AddNurseryPlantFormValues;
+  control: Control<AddNurseryPlantFormValues>;
   type?: string;
   placeholder?: string;
   error?: FieldError;

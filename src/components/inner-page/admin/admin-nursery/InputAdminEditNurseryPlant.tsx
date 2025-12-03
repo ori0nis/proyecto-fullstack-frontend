@@ -1,10 +1,10 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
-import type { AdminEditNurseryPlantFormValues } from "../../../../zod";
+import type { EditNurseryPlantFormValues } from "../../../../zod";
 
 interface Props {
   label: string;
-  name: keyof AdminEditNurseryPlantFormValues;
-  control: Control<AdminEditNurseryPlantFormValues>;
+  name: keyof EditNurseryPlantFormValues;
+  control: Control<EditNurseryPlantFormValues>;
   type?: string;
   error?: FieldError;
   as?: "text" | "file";
