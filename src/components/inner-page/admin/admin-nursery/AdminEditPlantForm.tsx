@@ -33,7 +33,6 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
     setLoading(true);
     setError(null);
 
-
     try {
       const success = await editPlant(plantId, data);
 
@@ -41,7 +40,7 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
         alert("Successfully edited plant!");
         reset();
         onSuccess();
-      } 
+      }
     } catch (error) {
       console.error(error);
       alert("There was an error editing the plant");
@@ -128,7 +127,7 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
             </button>
           </div>
         </form>
-        {error && <p className="">{error}</p>}
+        {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
       </div>
     </>
   );
