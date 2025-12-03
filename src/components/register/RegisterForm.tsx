@@ -146,7 +146,7 @@ export const RegisterForm = () => {
             Register
           </button>
         </form>
-        {error && <p>{error}</p>}
+        {error && <p className="text-[#c53030] text-xs font-medium font-[quicksand] mb-1">{error}</p>}
         {success && <p>User registered successfully</p>}
       </div>
     </>
