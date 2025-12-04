@@ -27,7 +27,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/assets/spritesheet.svg#home-icon" />
+            <use href="/assets/spriteSheet.svg#home-icon" />
           </svg>
           My Profile
         </NavLink>
@@ -37,7 +37,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/assets/spritesheet.svg#plant-icon" />
+            <use href="/assets/spriteSheet.svg#plant-icon" />
           </svg>
           MyPlants Nursery
         </NavLink>
@@ -47,7 +47,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/assets/spritesheet.svg#search-icon" />
+            <use href="/assets/spriteSheet.svg#search-icon" />
           </svg>
           Find friends
         </NavLink>
@@ -58,7 +58,7 @@ export const UserSidebar = () => {
           className="cursor-pointer text-left p-2 font-medium flex items-center gap-2 rounded-xl hover:bg-gray-200 transition-colors duration-150"
         >
           <svg width="21" height="21">
-            <use href="/assets/spritesheet.svg#logout-icon" />
+            <use href="/assets/spriteSheet.svg#logout-icon" />
           </svg>
           Log out
         </button>
@@ -75,7 +75,7 @@ export const UserSidebar = () => {
         onClick={() => setDropdownSidebar((prev) => !prev)}
       >
         <svg width="26" height="24">
-          <use href="/assets/spritesheet.svg#menu-icon" />
+          <use href="/assets/spriteSheet.svg#menu-icon" />
         </svg>
       </button>
 
@@ -89,7 +89,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/assets/spritesheet.svg#home-icon" />
+                <use href="/assets/spriteSheet.svg#home-icon" />
               </svg>
               My Profile
             </Link>
@@ -100,7 +100,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/assets/spritesheet.svg#plant-icon" />
+                <use href="/assets/spriteSheet.svg#plant-icon" />
               </svg>
               MyPlants Nursery
             </Link>
@@ -111,7 +111,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/assets/spritesheet.svg#search-icon" />
+                <use href="/assets/spriteSheet.svg#search-icon" />
               </svg>
               Find friends
             </Link>
@@ -121,7 +121,7 @@ export const UserSidebar = () => {
               className="cursor-pointer text-left p-2 font-medium flex items-center gap-2 rounded-xl hover:bg-gray-300 transition-colors duration-150"
             >
               <svg width="21" height="21">
-                <use href="/assets/spritesheet.svg#logout-icon" />
+                <use href="/assets/spriteSheet.svg#logout-icon" />
               </svg>
               Log out
             </button>
