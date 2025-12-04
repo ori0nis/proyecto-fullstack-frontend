@@ -26,6 +26,7 @@ export const AuthContextProvider = ({ children }: Props) => {
       setLoadingAuth(true);
       try {
         const response = await getCurrentUser();
+
         if (response.data && response.data.users && response.data.users.length > 0) {
           setUser(response.data.users[0]);
         } else {
@@ -46,14 +47,17 @@ export const AuthContextProvider = ({ children }: Props) => {
     try {
       await registerUser(user);
       navigate("/login", { replace: true });
+
       return true;
     } catch (error) {
       console.error(error);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
         setError("There was an error completing the register");
       }
+
       return false;
     }
   };
@@ -67,16 +71,19 @@ export const AuthContextProvider = ({ children }: Props) => {
       if (response.data && response.data.users && response.data.users.length > 0) {
         const loggedUser = response.data.users[0];
         setUser(loggedUser);
+
         return loggedUser;
       } else {
         setUser(null);
         setError("No user data received from server");
+
         return null;
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unexpected login error";
       setError(message);
       setUser(null);
+
       return null;
     }
   };
@@ -85,11 +92,13 @@ export const AuthContextProvider = ({ children }: Props) => {
     try {
       await logoutUser();
       setUser(null);
+
       if (location.pathname !== "/login") {
         navigate("/login", { replace: true });
       }
     } catch (error) {
       console.error(error);
+
       if (error instanceof Error) {
         setError(error.message);
       } else {
