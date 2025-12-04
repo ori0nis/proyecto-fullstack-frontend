@@ -110,7 +110,7 @@ export const ProfileLayout = () => {
           >
             Edit profile
             <svg width="21" height="21">
-              <use href="/assets/spritesheet.svg#settings-icon" className="cursor-pointer" />
+              <use href="/assets/spriteSheet.svg#settings-icon" className="cursor-pointer" />
             </svg>
           </Link>
         </div>

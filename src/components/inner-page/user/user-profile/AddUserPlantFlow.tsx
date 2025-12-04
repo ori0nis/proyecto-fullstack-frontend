@@ -120,7 +120,7 @@ export const AddUserPlantFlow = ({ onClose, onAdded }: Props) => {
       <>
         <button onClick={() => setStep("search")} className="cursor-pointer font-medium mb-4 flex items-center gap-1">
           <svg width="21" height="21">
-            <use href="/assets/spritesheet.svg#logout-icon" />
+            <use href="/assets/spriteSheet.svg#logout-icon" />
           </svg>
           Back
         </button>
