@@ -19,7 +19,7 @@ export const UserSidebar = () => {
       {/* Big screen sidebar */}
       <aside className="sticky top-0 h-screen row-span-2 w-fit hidden md:flex flex-col gap-3 p-4 border-r border-gray-700">
         {/* Logo */}
-        <img src="/public/images/myplants-logo.png" alt="myplants-logo" className="w-20 h-20 mx-auto object-contain" />
+        <img src="/images/myplants-logo.png" alt="myplants-logo" className="w-20 h-20 mx-auto object-contain" />
 
         {/* Links */}
         <NavLink
@@ -27,7 +27,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/public/assets/spritesheet.svg#home-icon" />
+            <use href="/assets/spritesheet.svg#home-icon" />
           </svg>
           My Profile
         </NavLink>
@@ -37,7 +37,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/public/assets/spritesheet.svg#plant-icon" />
+            <use href="/assets/spritesheet.svg#plant-icon" />
           </svg>
           MyPlants Nursery
         </NavLink>
@@ -47,7 +47,7 @@ export const UserSidebar = () => {
           className={({ isActive }) => `${baseClass} ${hoverActiveClass} ${isActive ? activeClass : ""}`}
         >
           <svg width="21" height="21">
-            <use href="/public/assets/spritesheet.svg#search-icon" />
+            <use href="/assets/spritesheet.svg#search-icon" />
           </svg>
           Find friends
         </NavLink>
@@ -58,7 +58,7 @@ export const UserSidebar = () => {
           className="cursor-pointer text-left p-2 font-medium flex items-center gap-2 rounded-xl hover:bg-gray-200 transition-colors duration-150"
         >
           <svg width="21" height="21">
-            <use href="/public/assets/spritesheet.svg#logout-icon" />
+            <use href="/assets/spritesheet.svg#logout-icon" />
           </svg>
           Log out
         </button>
@@ -75,7 +75,7 @@ export const UserSidebar = () => {
         onClick={() => setDropdownSidebar((prev) => !prev)}
       >
         <svg width="26" height="24">
-          <use href="/public/assets/spritesheet.svg#menu-icon" />
+          <use href="/assets/spritesheet.svg#menu-icon" />
         </svg>
       </button>
 
@@ -89,7 +89,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/public/assets/spritesheet.svg#home-icon" />
+                <use href="/assets/spritesheet.svg#home-icon" />
               </svg>
               My Profile
             </Link>
@@ -100,7 +100,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/public/assets/spritesheet.svg#plant-icon" />
+                <use href="/assets/spritesheet.svg#plant-icon" />
               </svg>
               MyPlants Nursery
             </Link>
@@ -111,7 +111,7 @@ export const UserSidebar = () => {
               onClick={() => setDropdownSidebar(false)}
             >
               <svg width="21" height="21">
-                <use href="/public/assets/spritesheet.svg#search-icon" />
+                <use href="/assets/spritesheet.svg#search-icon" />
               </svg>
               Find friends
             </Link>
@@ -121,7 +121,7 @@ export const UserSidebar = () => {
               className="cursor-pointer text-left p-2 font-medium flex items-center gap-2 rounded-xl hover:bg-gray-300 transition-colors duration-150"
             >
               <svg width="21" height="21">
-                <use href="/public/assets/spritesheet.svg#logout-icon" />
+                <use href="/assets/spritesheet.svg#logout-icon" />
               </svg>
               Log out
             </button>
