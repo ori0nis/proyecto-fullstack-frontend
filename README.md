@@ -2,7 +2,11 @@
 MyPlants.io is designed for you to collect your plants, post new ones on the universal repository, and find other plant-loving users.
 
 - Take a look at MyPlants.io's frontend deployment [here](https://myplantsdotio.vercel.app/).
-- The backend endpoints are deployed [here](https://myplants-backend.onrender.com/).
+- The backend is deployed [here](https://myplants-backend.onrender.com/).
+
+### **‼️ Please note:**
+- The only working deployment endpoint at the moment is: https://myplantsdotio.vercel.app. Don't refresh with /login or /register, because the app will return 404.
+- In order to start the frontend app, please wake up the backend first. Otherwise, the first GET request to /login will fail.
 
 ## 🌿 About the Project
 MyPlants.io allows plant enthusiasts to manage their plant collections, see other users, and share their botanical treasures. It is based on:
@@ -37,8 +41,6 @@ MyPlants.io allows plant enthusiasts to manage their plant collections, see othe
 - Deployment: ``Vercel``
 
 ## 📦 Installation & Setup
-
-## IMPORTANT: Since MyPlants.io's backend is deployed on a free instance of ``Render``, you will either have to wait up to 30 seconds for the first request to complete, or you can pre-wake the instance by loading it [here](https://myplants-backend.onrender.com/).
 
 ## BACKEND:
 
@@ -98,7 +100,7 @@ npm run build
 - Secure password storage with ``bcrypt`` hashing
 
 ## 👔 Plant Management
-- Create your personal plant entries with your own images
+- Create your personal plant entries with your own images (images aren't required, but encouraged for a more fun experience)
 - View all plants in the repository, or filter them by common name, scientific name and type
 - Request to add a new plant to the repository
 
@@ -113,9 +115,50 @@ npm run build
 
 ## 🔐 Authentication System
 - Backend hashes passwords using ``bcrypt``
-- Frontend ``axios`` interceptor checks each request to validate token, using a validation endpoint:
+- Backend is set up to generate cookies:
 
-```ts 
+```ts
+// index.ts
+
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+```
+
+- Backend generates token and refresh token with ``JWT``, and then checks authentication via ``isAuth`` and ``refreshToken`` middlewares:
+
+```ts
+// token.ts
+
+export const verifyToken = ({ token, refresh = false }: { token: string, refresh?: boolean }) => {
+  const secret = refresh ? REFRESH_TOKEN_SECRET : JWT_SECRET;
+  return jwt.verify(token, secret);
+};
+```
+
+- ``axios`` app is set up to accept cookies:
+
+```ts
+// axios.api.ts
+
+export const API: AxiosInstance = axios.create({
+  baseURL: VITE_API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+```
+
+- Frontend ``axios`` interceptor checks each request to validate refresh token, using a validation endpoint:
+
+```ts
+// axios.api.ts
+
 API.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -149,3 +192,73 @@ API.interceptors.response.use(
 );
 ```
 
+- ``AuthContextProvider`` checks session and sets global ``user`` with received data from backend:
+
+```ts
+// /login and /register paths are ignored, since they don't require authentication
+
+useEffect(() => {
+    const checkSession = async () => {
+      if (["/login", "/register"].includes(location.pathname)) {
+        setLoadingAuth(false);
+        return;
+      }
+
+      setLoadingAuth(true);
+      try {
+        const response = await getCurrentUser();
+
+        if (response.data && response.data.users && response.data.users.length > 0) {
+          setUser(response.data.users[0]);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+        setUser(null);
+      } finally {
+        setLoadingAuth(false);
+      }
+    };
+
+    checkSession();
+  }, [location.pathname]);
+```
+
+## 🔐 Authorization System
+- Dedicated data management flux and UI for role: user and role: admin
+- Admin panel lets admins edit users, and edit and delete nursery plants
+
+## 🚀 Router and Endpoints
+- Router is based on ``react-router-dom``, and it is designed to contain all contexts and wrap ``App.tsx``
+- ``PrivateGuard``
+- Dedicated ``PrivateRouter`` and ``AdminRouter``, protected by ``hasRole`` authorization:
+
+```ts
+// AuthContextProvider.tsx
+
+const hasRole = (role: string) => {
+    return user?.role === role;
+};
+
+// PrivateGuard.tsx
+
+if (requiredRole && !hasRole(requiredRole)) return <Unauthorized />;
+```
+
+## 🌟 Future Enhancements
+- Dark mode
+- Plant collections (favorites, want to have)
+- Plant status
+- Real email registration with email service/account confirmation
+- Real friend requests, following/followed lists
+- Better app performance
+- All available endpoints correctly routed on ``Vercel``
+
+## 📄 License
+This project is open source and available under the ``MIT License``.
+
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome! Contact me for more info, and stay up to date with the issues page.
+
+Happy potting 🌱!
