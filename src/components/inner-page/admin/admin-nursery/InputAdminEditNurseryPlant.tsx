@@ -1,13 +1,19 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
 import type { EditNurseryPlantFormValues } from "../../../../zod";
 
+interface SelectOptions {
+  label: string;
+  value: string;
+}
+
 interface Props {
   label: string;
   name: keyof EditNurseryPlantFormValues;
   control: Control<EditNurseryPlantFormValues>;
   type?: string;
   error?: FieldError;
-  as?: "text" | "file";
+  as?: "text" | "file" | "select";
+  options?: SelectOptions[];
   placeholder?: string;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -24,6 +30,7 @@ export const InputAdminEditNurseryPlant = ({
   type = "text",
   error,
   as = "text",
+  options,
   placeholder,
   onFocus = () => {},
   onBlur = () => {},
@@ -72,6 +79,28 @@ export const InputAdminEditNurseryPlant = ({
 
                 {error && <p className={errorClassname}>{error.message}</p>}
               </div>
+            </>
+          ) : as === "select" ? (
+            <>
+              <select
+                id={name}
+                onFocus={() => {
+                  onFocus();
+                }}
+                onBlur={() => {
+                  field.onBlur();
+                  onBlur();
+                }}
+                className={inputClassname}
+              >
+                <option value="">Select option: </option>
+                {options?.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {error && <p className={errorClassname}>{error.message}</p>}
             </>
           ) : (
             <>

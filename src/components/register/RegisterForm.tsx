@@ -70,7 +70,6 @@ export const RegisterForm = () => {
 
   return (
     <>
-      {/* // TODO: GSAP */}
       <div className="bg-[#cdb9a3] border-gray-400 rounded-lg text-center shadow-[-6px_6px_12px_rgba(0,0,0,0.18)] p-1">
         <form action="post" onSubmit={handleSubmit(onSubmit)}>
           <InputRegister
@@ -79,6 +78,7 @@ export const RegisterForm = () => {
             control={control}
             type="text"
             placeholder="Username..."
+            maxLength={40}
             error={errors.username}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
@@ -91,6 +91,7 @@ export const RegisterForm = () => {
             control={control}
             type="email"
             placeholder="Email..."
+            maxLength={80}
             error={errors.email}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
@@ -130,14 +131,20 @@ export const RegisterForm = () => {
             label="Plant care skill level: "
             name="plant_care_skill_level"
             control={control}
-            type="text"
-            placeholder="Plant care skill level..."
+            as="select"
+            options={[
+              { label: "beginner", value: "beginner" },
+              { label: "intermediate", value: "intermediate" },
+              { label: "advanced", value: "advanced" },
+            ]}
             error={errors.plant_care_skill_level}
             containerClassname="mx-auto text-center p-2 min-w-[250px]"
             labelClassname="font-[quicksand] text-md text-gray-700 mb-1 block"
             inputClassname="font-[quicksand] text-sm w-full px-4 py-2 rounded-lg border border-gray-400 text-gray-800 font-sans placeholder:text-gray-500 placeholder:font-light focus:outline-none focus:ring-1 focus:ring-[#946a4c] focus:border-[#946a4c] transition-colors duration-200"
             errorClassname="text-[#c53030] text-xs font-medium font-[quicksand] mt-1"
           />
+
+          {/* Button */}
           <button
             type="submit"
             disabled={!(username && email && password && passwordsMatch && plant_care_skill_level) || loading}

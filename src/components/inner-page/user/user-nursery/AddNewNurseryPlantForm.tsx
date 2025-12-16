@@ -89,9 +89,15 @@ export const AddNewNurseryPlantForm = ({ onClose }: Props) => {
           <InputNewNurseryPlant
             label="Plant type*: "
             name="type"
-            type="text"
-            placeholder="Plant type..."
             control={control}
+            as="select"
+            options={[
+              { label: "tropical", value: "tropical" },
+              { label: "desert", value: "desert" },
+              { label: "temperate", value: "temperate" },
+              { label: "alpine", value: "alpine" },
+              { label: "aquatic", value: "aquatic" },
+            ]}
             error={errors.type}
             containerClassname="mx-auto text-center p-2"
             labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
