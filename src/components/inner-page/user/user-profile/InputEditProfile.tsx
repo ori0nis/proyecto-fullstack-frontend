@@ -1,6 +1,11 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
 import type { EditProfileFormValues } from "../../../../zod/edit-profile.schema";
 
+interface SelectOptions {
+  label: string;
+  value: string;
+}
+
 interface Props {
   label: string;
   name: keyof EditProfileFormValues;
@@ -8,7 +13,8 @@ interface Props {
   type?: string;
   placeholder?: string;
   error?: FieldError;
-  as?: "text" | "textarea" | "file";
+  as?: "text" | "textarea" | "file" | "select";
+  options?: SelectOptions[];
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (value: string) => void;
@@ -26,6 +32,7 @@ export const InputEditProfile = ({
   placeholder,
   error,
   as = "text",
+  options,
   onFocus = () => {},
   onBlur = () => {},
   onChange = () => {},
@@ -96,6 +103,27 @@ export const InputEditProfile = ({
 
                 {error && <p className={errorClassname}>{error.message}</p>}
               </div>
+            </>
+          ) : as === "select" ? (
+            <>
+              <select
+                id={name}
+                onFocus={onFocus}
+                onBlur={() => {
+                  field.onBlur();
+                  onBlur();
+                }}
+                className={inputClassname}
+              >
+                <option value="">Select option: </option>
+                {options?.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              {error && <p className={errorClassname}>{error.message}</p>}
             </>
           ) : (
             <>

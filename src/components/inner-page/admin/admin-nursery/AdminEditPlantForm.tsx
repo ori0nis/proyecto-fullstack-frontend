@@ -99,8 +99,14 @@ export const AdminEditPlantForm = ({ plantId, onClose, onSuccess }: Props) => {
           <InputAdminEditNurseryPlant
             label="Type: "
             name="type"
-            type="text"
-            placeholder="New type..."
+            as="select"
+            options={[
+              { label: "tropical", value: "tropical" },
+              { label: "desert", value: "desert" },
+              { label: "temperate", value: "temperate" },
+              { label: "alpine", value: "alpine" },
+              { label: "aquatic", value: "aquatic" },
+            ]}
             error={errors.type}
             control={control}
             containerClassname="mx-auto text-center p-2"

@@ -1,6 +1,11 @@
 import { Controller, type Control, type FieldError } from "react-hook-form";
 import type { AddNurseryPlantFormValues } from "../../../../zod";
 
+interface SelectOptions {
+  label: string;
+  value: string;
+}
+
 interface Props {
   label: string;
   name: keyof AddNurseryPlantFormValues;
@@ -8,7 +13,8 @@ interface Props {
   type?: string;
   placeholder?: string;
   error?: FieldError;
-  as?: "text" | "file";
+  as?: "text" | "file" | "select";
+  options?: SelectOptions[];
   onFocus?: () => void;
   onBlur?: () => void;
   containerClassname?: string;
@@ -25,6 +31,7 @@ export const InputNewNurseryPlant = ({
   placeholder,
   error,
   as = "text",
+  options,
   onFocus = () => {},
   onBlur = () => {},
   containerClassname = "",
@@ -63,6 +70,28 @@ export const InputNewNurseryPlant = ({
               {field.value && field.value instanceof File && <p className="text-xs mt-1">{field.value.name}</p>}
               {error && <p className={errorClassname}>{error.message}</p>}
             </div>
+          ) : as === "select" ? (
+            <>
+              <select
+                name={name}
+                onFocus={() => {
+                  onFocus();
+                }}
+                onBlur={() => {
+                  field.onBlur();
+                  onBlur();
+                }}
+                className={inputClassname}
+              >
+                <option value="">Select option: </option>
+                {options?.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {error && <p className={errorClassname}>{error.message}</p>}
+            </>
           ) : (
             <>
               <input

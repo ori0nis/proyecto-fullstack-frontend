@@ -19,7 +19,7 @@ export const UserList = ({ users, initialLoading, hasMore, loadingMore }: Props)
     <>
       <div className="w-full overflow-x-auto text-sm mt-3">
         <table className="min-w-full border rounded-lg overflow-hidden">
-          <thead className="bg-gray-100 text-gray-700 text-sm uppercase hidden min-[894px]:table-header-group">
+          <thead className="bg-gray-100 text-gray-700 text-sm uppercase hidden min-[922px]:table-header-group">
             <tr>
               <th className="p-2 text-left">ID</th>
               <th className="p-2 text-left">Username</th>
@@ -31,28 +31,28 @@ export const UserList = ({ users, initialLoading, hasMore, loadingMore }: Props)
 
           <tbody>
             {users.map((user) => (
-              <tr key={user._id} className="border-b flex flex-col min-[894px]:table-row p-2 min-[894px]:p-0 mb-3">
-                <td className="p-2 min-[894px]:p-1" data-label="ID">
-                  <span className="min-[894px]:hidden font-semibold text-gray-900 underline uppercase">ID:</span>{" "}
-                  {user._id}
+              <tr key={user._id} className="border-b flex flex-col min-[922px]:table-row p-2 min-[922px]:p-0 mb-3">
+                <td className="p-2 min-[922px]:p-1" data-label="ID">
+                  <span className="min-[922px]:hidden font-semibold text-gray-900 underline uppercase">ID:</span>
+                  <span> {user._id}</span>
                 </td>
 
-                <td className="p-2 min-[894px]:p-1" data-label="Username">
-                  <span className="min-[894px]:hidden font-semibold text-gray-900 underline uppercase">Username:</span>{" "}
-                  {user.username}
+                <td className="p-2 min-[922px]:p-1 max-w-40" data-label="Username">
+                  <span className="min-[922px]:hidden font-semibold text-gray-900 underline uppercase">Username:</span>
+                  <span className="block truncate">{user.username}</span>
                 </td>
 
-                <td className="p-2 min-[894px]:p-1" data-label="Email">
-                  <span className="min-[894px]:hidden font-semibold text-gray-900 underline uppercase">Email:</span>{" "}
-                  {user.email}
+                <td className="p-2 min-[922px]:p-1 max-w-60 xs:max-w-40" data-label="Email">
+                  <span className="min-[922px]:hidden font-semibold text-gray-900 underline uppercase">Email:</span>
+                  <span className="block truncate">{user.email}</span>
                 </td>
 
-                <td className="p-2 min-[894px]:p-1" data-label="Role">
-                  <span className="min-[894px]:hidden font-semibold text-gray-900 underline uppercase">Role:</span>{" "}
-                  {user.role}
+                <td className="p-2 min-[922px]:p-1" data-label="Role">
+                  <span className="min-[922px]:hidden font-semibold text-gray-900 underline uppercase">Role:</span>
+                  <span> {user.role}</span>
                 </td>
 
-                <td className="p-2 min-[894px]:p-1" data-label="Actions">
+                <td className="p-2 min-[922px]:p-1" data-label="Actions">
                   <Link
                     to={`edit/${user._id}/`}
                     className="inline-block border px-3 py-1 rounded text-sm hover:bg-gray-100 transition"

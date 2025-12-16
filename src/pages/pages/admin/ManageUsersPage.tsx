@@ -158,6 +158,7 @@ export const ManageUsersPage = () => {
             </button>
           </div>
         </form>
+        
         {/* Trigger of search all */}
         <button
           onClick={() => {
@@ -169,11 +170,13 @@ export const ManageUsersPage = () => {
         >
           Click here for a list of all users
         </button>
+
         {/* UserList */}
         {(isAllUsersMode || users.length > 0) && (
           <UserList users={users} initialLoading={initialLoading} loadingMore={loadingMore} hasMore={hasMore} />
         )}
-        {/* States */} {/* // TODO: Replace with spinner  */}
+
+        {/* States */}
         {initialLoading && users.length > 0 && <p>Loading more users...</p>}
         {error && <p className="text-[#c53030] text-sm font-medium font-[quicksand] mt-2">{error}</p>}
       </div>

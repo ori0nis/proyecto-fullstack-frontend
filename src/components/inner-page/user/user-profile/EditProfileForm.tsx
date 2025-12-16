@@ -130,8 +130,12 @@ export const EditProfileForm = ({ targetUser, onSuccess }: Props) => {
             label="Plant care skill level: "
             name="plant_care_skill_level"
             control={control}
-            type="text"
-            placeholder="Plant care skill level..."
+            as="select"
+            options={[
+              { label: "beginner", value: "beginner" },
+              { label: "intermediate", value: "intermediate" },
+              { label: "advanced", value: "advanced" },
+            ]}
             error={errors.plant_care_skill_level}
             containerClassname="mx-auto text-center mb-3"
             labelClassname="font-[quicksand] text-md text-gray-900 mb-1 block"
