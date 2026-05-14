@@ -73,7 +73,8 @@ export const InputNewNurseryPlant = ({
           ) : as === "select" ? (
             <>
               <select
-                name={name}
+                {...field}
+                value={typeof field.value === "string" ? field.value : ""}
                 onFocus={() => {
                   onFocus();
                 }}
